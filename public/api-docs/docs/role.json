@@ -1,0 +1,92 @@
+{
+    "title": "角色模块",
+    "forms": [
+        {
+            "title": "添加角色",
+            "description": "新增新的角色",
+            "url": "/role/add",
+            "method": "post",
+            "inputs": [
+                {
+                    "name": "name",
+                    "description": "角色名称"
+                },
+                {
+                    "name": "parentid",
+                    "description": "上级角色id"
+                },
+                {
+                    "name": "description",
+                    "description": "角色描述"
+                },
+                {
+                    "name": "permissions",
+                    "description": "权限id列表，逗号隔开"
+                }
+            ]
+        },
+        {
+            "title": "修改角色",
+            "description": "编辑指定id的角色",
+            "url": "/role/update",
+            "method": "put",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "角色id"
+                },
+                {
+                    "name": "name",
+                    "description": "角色名称"
+                },
+                {
+                    "name": "parentid",
+                    "description": "上级角色id"
+                },
+                {
+                    "name": "description",
+                    "description": "角色描述"
+                },
+                {
+                    "name": "permissions",
+                    "description": "权限id列表，逗号隔开"
+                }
+            ]
+        },
+        {
+            "title": "删除指定ID的角色",
+            "description": "删除指定ID的角色",
+            "url": "/role/delete",
+            "method": "delete",
+            "inputs": [
+                {
+                    "name": "roleid",
+                    "description": "角色id"
+                }
+            ]
+        },
+        {
+            "title": "获取角色列表",
+            "description": "获取角色列表，可分页",
+            "url": "/role/search",
+            "method": "get",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "description": "查询最大数据量"
+                },
+                {
+                    "name": "offset",
+                    "description": "查询偏移量"
+                }
+            ]
+        },
+        {
+            "title": "获取权限下拉列表",
+            "description": "获取权限下拉列表",
+            "url": "/role/permissions",
+            "method": "get",
+            "inputs": []
+        }
+    ]
+}

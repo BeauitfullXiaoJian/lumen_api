@@ -1,0 +1,84 @@
+{
+    "title": "账户管理",
+    "forms": [
+        {
+            "title": "添加账户",
+            "description": "管理员添加新的账户",
+            "url": "/admin/add",
+            "method": "post",
+            "inputs": [
+                {
+                    "name": "account",
+                    "description": "账号"
+                },
+                {
+                    "name": "password",
+                    "description": "密码"
+                },
+                {
+                    "name": "role",
+                    "description": "角色id列表，用逗号隔开"
+                }
+            ]
+        },
+        {
+            "title": "修改账户",
+            "description": "修改指定id的角色",
+            "url": "/admin/update",
+            "method": "put",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "账户id"
+                },
+                {
+                    "name": "account",
+                    "description": "账号"
+                },
+                {
+                    "name": "password",
+                    "description": "密码"
+                },
+                {
+                    "name": "role",
+                    "description": "角色id列表，用逗号隔开"
+                }
+            ]
+        },
+        {
+            "title": "删除账号",
+            "description": "删除指定ID的账号",
+            "url": "/admin/delete",
+            "method": "delete",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "账户id"
+                }
+            ]
+        },
+        {
+            "title": "获取账号列表",
+            "description": "获取角色列表，可分页",
+            "url": "/admin/search",
+            "method": "get",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "description": "查询最大数据量"
+                },
+                {
+                    "name": "offset",
+                    "description": "查询偏移量"
+                }
+            ]
+        },
+        {
+            "title": "角色下拉",
+            "description": "获取角色下拉列表",
+            "url": "/admin/roles",
+            "method": "get",
+            "inputs": []
+        }
+    ]
+}

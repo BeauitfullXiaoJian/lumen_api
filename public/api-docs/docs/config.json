@@ -1,0 +1,17 @@
+{
+  "server": "",
+  "title": "API-DOCS",
+  "headers": [
+    "ng-params-one",
+    "ng-params-two",
+    "ng-params-three",
+    "ng-params-four"
+  ],
+  "docs": [
+    "auth.json",
+    "menu.json",
+    "permission.json",
+    "role.json",
+    "admin.json"
+  ]
+}
