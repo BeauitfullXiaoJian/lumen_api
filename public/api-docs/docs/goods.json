@@ -1,0 +1,18 @@
+{
+    "title": "测试模块",
+    "forms": [
+        {
+            "title": "图片测试",
+            "description": "",
+            "url": "/goods/thumb/upload",
+            "method": "post",
+            "inputs": [
+                {
+                    "name": "thumb",
+                    "description": "图片",
+                    "type": "file"
+                }
+            ]
+        }
+    ]
+}

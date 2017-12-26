@@ -3,7 +3,7 @@
 /**
  * @file:    SearchTrait.php
  * @author:  xiaojian
- * @date:    2017-08-01
+ * @date:    2017-12-16
  * @exp:     提供了模型搜索方法
  */
 namespace App\Api\Traits\Orm;
@@ -43,6 +43,13 @@ trait SearchTrait
             if (isset($params[$key]) && (!empty($params[$key] || $params[$key] == 0))) {
                 $fnc = $judgment[0];
                 $sql = count($judgment) === 1 ? $sql->$fnc($key, $params[$key]) : $sql->$fnc($key, $judgment[1], $params[$key]);
+            } else if (!isset($params[$key]) && count($judgment) === 1) {
+                $fnc = $judgment[0];
+                // suport filter
+                $filters = ['whereNull', 'whereNotNull'];
+                if (in_array($fnc, $filters)) {
+                    $sql = $sql->$fnc($key);
+                }
             }
         }
         $result['total'] = $sql->count();

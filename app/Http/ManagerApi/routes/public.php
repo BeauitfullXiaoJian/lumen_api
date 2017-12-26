@@ -12,7 +12,9 @@ $app->post('/signin', function (ApiContract $api, AuthContract $auth) {
     $params = $api->checkParams(['account:min:4|max:12', 'password:min:4|max:12', 'platform:min:4|max:10']);
 
     if ($auth->signin($params)) {
-        return $api->datas($auth->updateToken($params['platform']));
+        $tokenParams = $auth->updateToken($params['platform']);
+        $tokenParams['platform'] = $params['platform'];
+        return $api->datas($tokenParams);
     } else {
         return $api->error("账户或密码错误");
     }

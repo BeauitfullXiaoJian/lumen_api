@@ -30,8 +30,7 @@ class FileService implements FileContract
             $filename = sprintf("%s.%s", self::getFileNameByMd5Uniqid(), $file->getClientOriginalExtension());
             $file->move($this->file_path . $path, $filename);
             return sprintf("%s/%s", $path, $filename);
-        }
-        else {
+        } else {
             return "file upload error";
         }
     }
@@ -47,16 +46,14 @@ class FileService implements FileContract
                 $filename = sprintf("%s.%s", self::getFileNameByMd5Uniqid(), $file->getClientOriginalExtension());
                 $file->move($this->file_path . $path, $filename);
                 return sprintf("%s/%s", $path, $filename);
-            }
-            else {
+            } else {
                 return "image type error";
             }
-        }
-        else {
+        } else {
             return "image upload error";
         }
     }
-    
+
     //根据文件MD5值保存图片（避免上传多张重复图片，但是文件一旦删除，所有使用同一图片的页面都将失去这张图，所以这个方法只能用于私有操作）
     public function saveImageByMd5($name, $path)
     {
@@ -68,17 +65,15 @@ class FileService implements FileContract
                 $filename = sprintf("%s.%s", self::getFileNameByMd5($file), $file->getClientOriginalExtension());
                 $file->move($this->file_path . $path, $filename);
                 return sprintf("%s/%s", $path, $filename);
-            }
-            else {
+            } else {
                 return "image type error";
             }
-        }
-        else {
+        } else {
             return "image upload error";
         }
     }
 
-     //根据文件MD5值保存文件
+    //根据文件MD5值保存文件
     public function saveFileByMd5($name, $path)
     {
         if (self::fileIsReady($name)) {
@@ -87,8 +82,7 @@ class FileService implements FileContract
             $filename = sprintf("%s.%s", self::getFileNameByMd5($file), $file->getClientOriginalExtension());
             $file->move($this->file_path . $path, $filename);
             return sprintf("%s/%s", $path, $filename);
-        }
-        else {
+        } else {
             return "image upload error";
         }
     }
@@ -97,13 +91,17 @@ class FileService implements FileContract
     public function removeFile($url)
     {
         $filename = "$this->file_path\\$url";
-        // dd($filename);
         if (file_exists($filename)) {
             unlink($filename);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
+    }
+
+    //判断保存链接是否正确
+    public function isError($url)
+    {
+        return $url === 'image type error' || $url === 'image upload error';
     }
 }

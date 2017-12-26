@@ -36,10 +36,24 @@ class AdminController extends Controller
     {
 
         //limit:限制数据条数，offset:查询游标
-        $params = $this->api->getParams(['limit:integer', 'offset:integer']);
+        $params = $this->api->getParams(['limit:integer', 'offset:integer'], ['account', 'role_id:integer|min:1'], ['role_id' => 'role']);
+
+        // 查询参数
+        $search_params = [
+            'account' => ['where', 'like'],
+        ];
+
+        // 数据操作
+        $search_ops = [
+            'role' => ['with'],
+        ];
+
+        if (isset($params['datas']['account'])) {
+            $params['datas']['account'] = "%{$params['datas']['account']}%";
+        }
 
         if ($params['result']) {
-            return $this->api->datas($this->admin->search($params['datas']));
+            return $this->api->datas($this->admin->search($params['datas'], $search_params, $search_ops));
         } else {
             return $params;
         }

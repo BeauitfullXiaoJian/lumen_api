@@ -12,6 +12,7 @@
     "menu.json",
     "permission.json",
     "role.json",
-    "admin.json"
+    "admin.json",
+    "goods.json"
   ]
 }
