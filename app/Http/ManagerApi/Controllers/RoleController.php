@@ -9,9 +9,9 @@
 
 namespace App\Http\ManagerApi\Controllers;
 
-use Laravel\Lumen\Routing\Controller;
 use App\Api\Contracts\ApiContract;
 use App\Models\AccessRole;
+use Laravel\Lumen\Routing\Controller;
 
 class RoleController extends Controller
 {
@@ -30,16 +30,24 @@ class RoleController extends Controller
         $this->role = new AccessRole();
     }
 
-
     //获取系统角色列表（分页）
-    function getRoles()
+    public function getRoles()
     {
 
-        //limit:限制数据条数，offset:查询游标
-        $params = $this->api->getParams(['limit:integer', 'offset:integer']);
+        // limit:限制数据条数，offset:查询游标
+        $params = $this->api->getParams(['limit:integer', 'offset:integer'], ['name']);
+
+        // 查询参数
+        $search_params = [
+            'name' => ['where', 'like'],
+        ];
+
+        if (isset($params['name'])) {
+            $params['datas']['name'] = "%{$params['name']}%";
+        }
 
         if ($params['result']) {
-            return $this->api->datas($this->role->search($params['datas']));
+            return $this->api->datas($this->role->search($params['datas'], $search_params));
         } else {
             return $params;
         }
@@ -50,7 +58,7 @@ class RoleController extends Controller
      * @author xiaojian
      * @return array[result:请求结果，message:操作信息,datas:查询数据]
      */
-    function getRolesOptions()
+    public function getRolesOptions()
     {
         return $this->api->datas($this->role->all());
     }
@@ -61,7 +69,7 @@ class RoleController extends Controller
      * @return array[result:请求结果，message:操作信息]
      * @todo   角色被删除后，使用此角色的组将剔除此角色，此角色的下级角色将没有上级角色
      */
-    function deleteRole()
+    public function deleteRole()
     {
 
         //id:删除的角色id
@@ -81,9 +89,9 @@ class RoleController extends Controller
      * @author xiaojian
      * @return array[result:请求结果，message:操作信息]
      */
-    function changeRole()
+    public function changeRole()
     {
- 
+
         //必须参数[id:角色ID,name:角色名称，parentid:上级角色ID，description:角色描述],可选参数[permissions:权限id串（1,2,3,4...）]
         $params = $this->api->getParams(['id:integer', 'name', 'parentid:integer', 'description:string|max:100'], ['permissions:string']);
 
@@ -113,9 +121,9 @@ class RoleController extends Controller
      * @return array[result:请求结果，message:操作信息]
      * @tdo    这里没有验证上级角色合法性，权限id的合法性，重复创建角色也可以
      */
-    function addRole()
+    public function addRole()
     {
-  
+
         //必须参数[name:角色名称，parentid:上级角色ID，description:角色描述],可选参数[permissions:权限id串（1,2,3,4...）]
         $params = $this->api->getParams(['name', 'parentid:integer', 'description:string|max:100'], ['permissions:string']);
 
