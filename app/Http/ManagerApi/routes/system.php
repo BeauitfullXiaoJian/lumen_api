@@ -104,6 +104,18 @@ $app->group(['middleware' => 'auth:menu-manager'], function ($app) {
 
     // 获取权限下拉列表
     $app->get('/menu/permissions', 'PermissionController@getAllPermissionAndModel');
+
+    // 添加菜单模块
+    $app->post('/menu/model/add', 'MenuController@addModel');
+
+    // 添加菜单模块
+    $app->put('/menu/model/update', 'MenuController@updateModel');
+
+    // 删除菜单模块
+    $app->delete('/menu/model/delete', 'MenuController@deleteModel');
+
+    // 排序菜单模块
+    $app->put('/menu/model/sort', 'MenuController@sortModel');
 });
 
 /*-----------------------账户管理模块---------------------*/

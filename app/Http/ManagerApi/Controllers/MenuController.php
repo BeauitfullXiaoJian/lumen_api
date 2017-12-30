@@ -14,6 +14,7 @@ use App\Api\Contracts\ApiContract;
 use App\Core\AuthContract;
 use App\Api\Traits\Func\ArraySortTrait;
 use App\Models\AccessMenu;
+use App\Models\AccessMenuModel;
 
 class MenuController extends Controller
 {
@@ -44,13 +45,15 @@ class MenuController extends Controller
         //get groups data
         $groups = $this->menu->groupData();
 
+        $models = AccessMenuModel::orderBy('level')->get();
+
         //desc sort  groups data by level
         foreach ($groups as $key => $value) {
             $groups[$key]['groups'] = $this->array_sort_params($value['groups'], 'level', SORT_ASC);
         }
 
         //按parentid分组获取数据
-        return $this->api->datas($groups);
+        return $this->api->datas(['groups'=>$groups,'models'=>$models]);
     }
 
     function addMenu()
@@ -147,5 +150,48 @@ class MenuController extends Controller
 
         //按parentid分组获取数据
         return $this->api->datas($groups);
+    }
+
+    public function addModel(){
+        $params = $this->api->checkParams(['title']);
+        $model = AccessMenuModel::find($params);
+        if(isset($mdoel)){
+            return $this->api->error('请不要添加重复的菜单模块');
+        }
+        $max = AccessMenuModel::max('level');
+        $params['level'] = empty($max) ? 1 : ++$max;
+        AccessMenuModel::insert($params);
+        return $this->api->success('添加成功');
+    }
+
+    public function updateModel(){
+        $params = $this->api->checkParams(['id:integer','title']);
+        $model = AccessMenuModel::find($params['id']);
+        if(!isset($model)){
+            return $this->api->error('菜单模块不存在');
+        }
+        $model->title = $params['title'];
+        $model->save();
+        return $this->api->success('修改成功');
+    }
+
+    public function deleteModel(){
+
+        $params = $this->api->checkParams(['id:integer']);
+
+        //remove menu
+        $this->menu->where('mid', $params['id'])->delete();
+
+        //remove self
+        $result = AccessMenuModel::destroy($params['id']);
+
+        return $this->api->delete_message($result, '菜单模块删除成功~','菜单模块删除失败~');     
+    }
+
+    public function sortModel(){
+        $params = $this->api->checkParams(['ids:string']);
+        $ids = explode(',', $params['ids']);
+        $result = with(new AccessMenuModel())->sort($ids, 'level');
+        return $result ? $this->api->success("排序成功") : $this->api->error("排序失败");
     }
 }

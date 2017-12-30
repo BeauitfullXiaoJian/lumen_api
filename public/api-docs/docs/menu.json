@@ -94,6 +94,58 @@
             "url": "/menu/permissions",
             "method": "get",
             "inputs": []
+        },
+        {
+            "title": "添加菜单模块",
+            "description": "",
+            "url": "/menu/model/add",
+            "method": "post",
+            "inputs": [
+                {
+                    "name": "title",
+                    "description": "模块名称"
+                }
+            ]
+        },
+        {
+            "title": "修改菜单模块",
+            "description": "",
+            "url": "/menu/model/update",
+            "method": "put",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "模块id"
+                },
+                {
+                    "name": "title",
+                    "description": "模块名称"
+                }
+            ]
+        },
+        {
+            "title": "删除菜单模块",
+            "description": "",
+            "url": "/menu/model/delete",
+            "method": "delete",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "模块id"
+                }
+            ]
+        },
+        {
+            "title": "菜单模块排序",
+            "description": "",
+            "url": "/menu/model/sort",
+            "method": "put",
+            "inputs": [
+                {
+                    "name": "ids",
+                    "description": "排序的模块id,用逗号隔开"
+                }
+            ]
         }
     ]
 }
