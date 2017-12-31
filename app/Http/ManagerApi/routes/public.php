@@ -60,12 +60,14 @@ $app->get('/signout', function (ApiContract $api, AuthContract $auth) {
 // 权限令牌校验(仅开发模式下可用)
 $app->post('/check', function (ApiContract $api, AuthContract $auth) {
 
-    $params = $api->checkParams(['ng-params-one:min:4|max:100', 'ng-params-two:min:30|max:200', 'platform:max:10'], [], ['ng-params-one' => 'secret', 'ng-params-two' => 'token']);
+    $params = $api->checkParams(
+        ['ng-params-one:min:4|max:100', 'ng-params-two:min:30|max:200', 'ng-params-three:max:10'],
+        [],
+        ['ng-params-one' => 'secret', 'ng-params-two' => 'token', 'ng-params-three' => 'platform']
+    );
 
     if ($auth->checkToken($params['secret'], $params['token'], $params['platform'])) {
         $user = $auth->user;
-        $user->detail = $auth->role->detail();
-        $user->role = $auth->info->role();
         return $api->datas($user);
     } else {
         return $api->error("未授权的令牌~");

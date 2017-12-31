@@ -9,12 +9,12 @@
 
 namespace App\Http\ManagerApi\Controllers;
 
-use Laravel\Lumen\Routing\Controller;
 use App\Api\Contracts\ApiContract;
-use App\Core\AuthContract;
 use App\Api\Traits\Func\ArraySortTrait;
+use App\Core\AuthContract;
 use App\Models\AccessMenu;
 use App\Models\AccessMenuModel;
+use Laravel\Lumen\Routing\Controller;
 
 class MenuController extends Controller
 {
@@ -40,7 +40,7 @@ class MenuController extends Controller
      * @author xiaojian
      * @return array[result:请求结果，message:操作信息,datas:数据结果]
      */
-    function getAllMenu()
+    public function getAllMenu()
     {
         //get groups data
         $groups = $this->menu->groupData();
@@ -53,24 +53,23 @@ class MenuController extends Controller
         }
 
         //按parentid分组获取数据
-        return $this->api->datas(['groups'=>$groups,'models'=>$models]);
+        return $this->api->datas(['groups' => $groups, 'models' => $models]);
     }
 
-    function addMenu()
+    public function addMenu()
     {
-        $params = $this->api->getParams(['title', 'icon', 'url', 'parentid:integer', 'permissionid:integer']);
+        $params = $this->api->getParams(['title', 'icon', 'url', 'parentid:integer', 'permissionid:integer', 'mid:integer']);
 
         if ($params['result']) {
             $max = $this->menu->where('parentid', $params['datas']['parentid'])->max('level');
             $params['datas']['level'] = empty($max) ? 1 : ++$max;
-            return $this->api->insert_message($this->menu->insertGetId($params['datas']), '菜单添加成功~','菜单添加失败~');
-        }
-        else {
+            return $this->api->insert_message($this->menu->insertGetId($params['datas']), '菜单添加成功~', '菜单添加失败~');
+        } else {
             return $params;
         }
     }
 
-    function deleteMenu()
+    public function deleteMenu()
     {
 
         $param = $this->api->getParam('menuid:integer');
@@ -85,14 +84,13 @@ class MenuController extends Controller
             //remove self
             $result = $this->menu->destroy($menuid);
 
-            return $this->api->delete_message($result, '菜单删除成功~','菜单删除失败~');
-        }
-        else {
+            return $this->api->delete_message($result, '菜单删除成功~', '菜单删除失败~');
+        } else {
             return $param;
         }
     }
 
-    function updateMenu()
+    public function updateMenu()
     {
         $params = $this->api->getParams(['id:integer'], ['title', 'icon', 'url', 'permissionid:integer']);
 
@@ -109,21 +107,19 @@ class MenuController extends Controller
             $this->menu->where('id', $menuid)->update($params['datas']);
 
             return $this->api->success('菜单修改成功~');
-        }
-        else {
+        } else {
             return $params;
         }
     }
 
-    function sortMenu()
+    public function sortMenu()
     {
         $param = $this->api->getParams(['ids']);
         if ($param['result']) {
             $ids = explode(',', $param['datas']['ids']);
             $result = $this->menu->sort($ids, 'level');
             return $result ? $this->api->success("排序成功") : $this->api->error("排序失败");
-        }
-        else {
+        } else {
             return $param;
         }
     }
@@ -133,29 +129,32 @@ class MenuController extends Controller
      * @author xiaojian
      * @return array[result:请求结果，message:操作信息,datas:数据结果]
      */
-    function getAdminMenu(AuthContract $auth)
+    public function getAdminMenu(AuthContract $auth)
     {
         $permissions = $auth->info->getPermissionids();
 
         $permissions[] = 0;
 
         $groups = $this->menu->groupData([
-            ['op' => 'whereIn', 'params' => ['permissionid', $permissions]]
+            ['op' => 'whereIn', 'params' => ['permissionid', $permissions]],
         ]);
 
-        //desc sort  groups data by level
+        $models = AccessMenuModel::orderBy('level')->get();
+
+        // desc sort  groups data by level
         foreach ($groups as $key => $value) {
             $groups[$key]['groups'] = $this->array_sort_params($value['groups'], 'level', SORT_ASC);
         }
 
-        //按parentid分组获取数据
-        return $this->api->datas($groups);
+        // 按parentid分组获取数据
+        return $this->api->datas(['groups' => $groups, 'models' => $models]);
     }
 
-    public function addModel(){
+    public function addModel()
+    {
         $params = $this->api->checkParams(['title']);
         $model = AccessMenuModel::find($params);
-        if(isset($mdoel)){
+        if (isset($mdoel)) {
             return $this->api->error('请不要添加重复的菜单模块');
         }
         $max = AccessMenuModel::max('level');
@@ -164,10 +163,11 @@ class MenuController extends Controller
         return $this->api->success('添加成功');
     }
 
-    public function updateModel(){
-        $params = $this->api->checkParams(['id:integer','title']);
+    public function updateModel()
+    {
+        $params = $this->api->checkParams(['id:integer', 'title']);
         $model = AccessMenuModel::find($params['id']);
-        if(!isset($model)){
+        if (!isset($model)) {
             return $this->api->error('菜单模块不存在');
         }
         $model->title = $params['title'];
@@ -175,7 +175,8 @@ class MenuController extends Controller
         return $this->api->success('修改成功');
     }
 
-    public function deleteModel(){
+    public function deleteModel()
+    {
 
         $params = $this->api->checkParams(['id:integer']);
 
@@ -185,10 +186,11 @@ class MenuController extends Controller
         //remove self
         $result = AccessMenuModel::destroy($params['id']);
 
-        return $this->api->delete_message($result, '菜单模块删除成功~','菜单模块删除失败~');     
+        return $this->api->delete_message($result, '菜单模块删除成功~', '菜单模块删除失败~');
     }
 
-    public function sortModel(){
+    public function sortModel()
+    {
         $params = $this->api->checkParams(['ids:string']);
         $ids = explode(',', $params['ids']);
         $result = with(new AccessMenuModel())->sort($ids, 'level');
