@@ -4,7 +4,7 @@ use App\Core\AuthContract;
 use Illuminate\Support\Facades\Request;
 
 // 首页-API-DOCS
-$app->get('/', function () {return redirect('api-docs');});
+$app->get('/', function () {return redirect('ng');});
 
 // 用户登入
 $app->post('/signin', function (ApiContract $api, AuthContract $auth) {
