@@ -13,5 +13,8 @@ $app->group(['middleware' => 'auth'], function ($app) {
 
     // 获取商品列表-查询-分页
     $app->get('/goods/search', 'GoodsController@searchGoods');
-
+    // 获取商品详情
+    $app->get('/goods/info', 'GoodsController@goodsInfo');
+    // 修改商品详情
+    $app->put('/goods/update', 'GoodsController@updateGoods');
 });

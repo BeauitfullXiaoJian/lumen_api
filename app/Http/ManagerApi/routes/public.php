@@ -21,16 +21,16 @@ $app->post('/signin', function (ApiContract $api, AuthContract $auth) {
 });
 
 // 用户注册(仅开发模式下可用)
-$app->post('/signup', function (ApiContract $api, AuthContract $auth) {
+// $app->post('/signup', function (ApiContract $api, AuthContract $auth) {
 
-    $params = $api->checkParams(['account:min:4|max:12', 'password:min:4|max:12']);
+//     $params = $api->checkParams(['account:min:4|max:12', 'password:min:4|max:12']);
 
-    if ($auth->signup($params)) {
-        return $api->success("注册成功~");
-    } else {
-        return $api->error("该用户已经被注册~");
-    }
-});
+//     if ($auth->signup($params)) {
+//         return $api->success("注册成功~");
+//     } else {
+//         return $api->error("该用户已经被注册~");
+//     }
+// });
 
 // 用户退出登入
 $app->get('/signout', function (ApiContract $api, AuthContract $auth) {
