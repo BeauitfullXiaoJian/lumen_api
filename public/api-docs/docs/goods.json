@@ -15,6 +15,19 @@
             ]
         },
         {
+            "title": "删除商品",
+            "description": "",
+            "url": "/goods/delete",
+            "method": "delete",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "商品id",
+                    "type": "text"
+                }
+            ]
+        },
+        {
             "title": "查询商品/获取商品列表",
             "description": "",
             "url": "/goods/search",
@@ -43,6 +56,97 @@
                 {
                     "name": "status",
                     "description": "商品状态（可选,0：下架，1：上架）",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "title": "添加商品",
+            "description": "",
+            "url": "/goods/add",
+            "method": "post",
+            "inputs": [
+                {
+                    "name": "name",
+                    "description": "商品名称",
+                    "type": "text"
+                },
+                {
+                    "name": "no",
+                    "description": "商品唯一编号",
+                    "type": "text"
+                },
+                {
+                    "name": "price",
+                    "description": "商品价格",
+                    "type": "text"
+                },
+                {
+                    "name": "inventory",
+                    "description": "商品库存",
+                    "type": "text"
+                },
+                {
+                    "name": "type",
+                    "description": "商品种类",
+                    "type": "text"
+                },
+                {
+                    "name": "status",
+                    "description": "商品状态（可选,0：下架，1：上架）",
+                    "type": "text"
+                },
+                {
+                    "name": "thumb",
+                    "description": "商品缩略图",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "title": "修改商品",
+            "description": "",
+            "url": "/goods/update",
+            "method": "put",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "商品id",
+                    "type": "text"
+                },
+                {
+                    "name": "name",
+                    "description": "商品名称",
+                    "type": "text"
+                },
+                {
+                    "name": "no",
+                    "description": "商品唯一编号",
+                    "type": "text"
+                },
+                {
+                    "name": "price",
+                    "description": "商品价格",
+                    "type": "text"
+                },
+                {
+                    "name": "inventory",
+                    "description": "商品库存",
+                    "type": "text"
+                },
+                {
+                    "name": "type",
+                    "description": "商品种类",
+                    "type": "text"
+                },
+                {
+                    "name": "status",
+                    "description": "商品状态（可选,0：下架，1：上架）",
+                    "type": "text"
+                },
+                {
+                    "name": "thumb",
+                    "description": "商品缩略图",
                     "type": "text"
                 }
             ]

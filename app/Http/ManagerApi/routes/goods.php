@@ -17,4 +17,8 @@ $app->group(['middleware' => 'auth'], function ($app) {
     $app->get('/goods/info', 'GoodsController@goodsInfo');
     // 修改商品详情
     $app->put('/goods/update', 'GoodsController@updateGoods');
+    // 添加新商品
+    $app->post('/goods/add', 'GoodsController@addGoods');
+    // 删除商品
+    $app->delete('/goods/delete', 'GoodsController@deleteGoods');
 });
