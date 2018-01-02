@@ -13,6 +13,39 @@
                     "type": "file"
                 }
             ]
+        },
+        {
+            "title": "查询商品/获取商品列表",
+            "description": "",
+            "url": "/goods/search",
+            "method": "get",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "description": "查询数据量",
+                    "type": "text"
+                },
+                {
+                    "name": "offset",
+                    "description": "查询偏移量",
+                    "type": "text"
+                },
+                {
+                    "name": "name",
+                    "description": "商品名称，关键词（可选）",
+                    "type": "text"
+                },
+                {
+                    "name": "type",
+                    "description": "商品种类（可选）",
+                    "type": "text"
+                },
+                {
+                    "name": "status",
+                    "description": "商品状态（可选,0：下架，1：上架）",
+                    "type": "text"
+                }
+            ]
         }
     ]
 }
