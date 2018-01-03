@@ -1,0 +1,31 @@
+{
+    "title": "工具模块",
+    "forms": [
+        {
+            "title": "音频上传",
+            "description": "",
+            "url": "/tool/audio",
+            "method": "post",
+            "inputs": [
+                {
+                    "name": "audio",
+                    "description": "音频",
+                    "type": "file"
+                }
+            ]
+        },
+        {
+            "title": "视频上传",
+            "description": "",
+            "url": "/tool/video",
+            "method": "post",
+            "inputs": [
+                {
+                    "name": "video",
+                    "description": "视频",
+                    "type": "file"
+                }
+            ]
+        }
+    ]
+}

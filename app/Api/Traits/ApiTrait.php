@@ -71,6 +71,8 @@ trait ApiTrait
             } else {
                 if (Request::has($value)) {
                     $validator_values[$value] = Request::input($value);
+                } else if (Request::hasFile($value)) {
+                    $validator_values[$value] = Request::file($value);
                 }
             }
         }
