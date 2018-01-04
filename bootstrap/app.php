@@ -65,6 +65,7 @@ $app->singleton(
 // ]);
 
 $app->routeMiddleware([
+    'sign' => 'App\Core\SignMiddleware',
     'auth' => 'App\Core\AuthMiddleware',
     'web_auth' => 'App\Core\WebAuthMiddleware',
 ]);
@@ -83,7 +84,6 @@ $app->routeMiddleware([
 $app->register(App\Api\Providers\FileServiceProvider::class);
 $app->register(App\Api\Providers\ApiServiceProvider::class);
 $app->register(App\Core\AuthServiceProvider::class);
-
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -104,5 +104,8 @@ $app->group(['namespace' => 'App\Http\ManagerApi\Controllers'], function ($app) 
 $app->group(['namespace' => 'App\Http\WebApi\Controllers'], function ($app) {
     require __DIR__ . '/../app/Http/WebApi/routes/route.php';
 });
+
+// 加载配置文件
+$app->configure('rsa');
 
 return $app;
