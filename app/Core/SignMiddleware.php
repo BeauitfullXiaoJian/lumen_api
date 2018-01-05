@@ -30,7 +30,10 @@ class SignMiddleware
     public function handle($request, Closure $next, $permission = 'default')
     {
 
-        // private key
+        // 关闭解密&签名
+        return $next($request);
+
+        // 获取用户私钥
         $rsa = config('rsa');
         $private_key = $rsa['private_key'];
 

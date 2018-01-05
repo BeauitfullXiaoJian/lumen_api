@@ -13,6 +13,7 @@ $app->group(['middleware' => 'auth'], function ($app) {
 
     // 以下接口需要验证签名&加密
     $app->group(['middleware' => 'sign'], function ($app) {
+
         // 获取商品列表-查询-分页
         $app->get('/goods/search', 'GoodsController@searchGoods');
         // 获取商品详情
@@ -23,5 +24,18 @@ $app->group(['middleware' => 'auth'], function ($app) {
         $app->post('/goods/add', 'GoodsController@addGoods');
         // 删除商品
         $app->delete('/goods/delete', 'GoodsController@deleteGoods');
+        // 获取种类下拉列表
+        $app->get('/goods/types/options', 'GoodsController@allGoodsType');
+
+        // 获取种类
+        $app->get('/goods/type/list', 'GoodsController@allGoodsType');
+        // 添加种类
+        $app->post('/goods/type/add', 'GoodsController@addGoodsType');
+        // 修改种类
+        $app->put('/goods/type/update', 'GoodsController@updateGoodsType');
+        // 排序种类
+        $app->put('/goods/type/sort', 'GoodsController@sortGoodsType');
+        // 删除种类
+        $app->delete('/goods/type/delete', 'GoodsController@deleteGoodsType');
     });
 });
