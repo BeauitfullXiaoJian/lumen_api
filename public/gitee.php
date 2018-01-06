@@ -12,8 +12,7 @@ $git_log_file = __DIR__ . '/git.log';
 // 记录日志
 function add_log($git_log_file, $message)
 {
-    $log = sprintf('[%s]:%s', date('Y-m-d H:i:s'), '1111111' . "\n");
-    echo $git_log_file;
+    $log = sprintf('[%s]:%s', date('Y-m-d H:i:s'), $message . "\n");
     file_put_contents($git_log_file, $log, FILE_APPEND);
 }
 
