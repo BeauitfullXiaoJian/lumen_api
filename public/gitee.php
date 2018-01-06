@@ -7,8 +7,11 @@ $secret = '123456789';
 
 $payload = file_get_contents('php://input');
 $payload = json_decode($payload, true);
-var_dump($payload['password']);
+if ($payload['password'] !== $secret) {
+    header('HTTP/1.1 403 Permission Denied');
+    die('Permission denied.');
+}
 
-// echo shell_exec("git -C {$local}/.. pull 2>&1");
-// echo shell_exec('whoami');
+echo shell_exec("git -C {$local}/.. pull 2>&1");
+echo shell_exec('whoami');
 die("done " . date('Y-m-d H:i:s', time()));
