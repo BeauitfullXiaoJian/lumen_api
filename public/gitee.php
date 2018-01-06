@@ -6,6 +6,7 @@ $local = __DIR__;
 $secret = '123456789';
 
 $payload = file_get_contents('php://input');
+$payload = json_decode($payload, true);
 var_dump($payload);
 
 // echo shell_exec("git -C {$local}/.. pull 2>&1");
