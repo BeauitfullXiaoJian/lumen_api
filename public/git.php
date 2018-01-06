@@ -7,7 +7,7 @@ $local = __DIR__;
 $secret = '123456789';
 
 // 如果启用验证，并且验证失败，返回错误
-$sign = isset($_SERVER['HTTP_X-Hub-Signature']) ? $_SERVER['HTTP_X-Hub-Signature'] : '';
+$sign = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
 var_dump($sign);
 if (!isset($sign)) {
     header('HTTP/1.1 403 Permission Denied');
