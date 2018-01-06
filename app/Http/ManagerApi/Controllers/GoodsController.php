@@ -49,13 +49,14 @@ class GoodsController extends Controller
         // 查询操作
         $search_ops = [
             'created_at' => ['orderBy', 'desc'],
+            'type' => ['with'],
         ];
 
         if (isset($params['name'])) {
             $params['name'] = "%{$params['name']}%";
         }
 
-        $datas = with(new StoreGoods)->search($params, $search_params);
+        $datas = with(new StoreGoods)->search($params, $search_params, $search_ops);
         return $this->api->paginate($datas);
     }
 
@@ -77,7 +78,7 @@ class GoodsController extends Controller
      */
     public function updateGoods()
     {
-        $params = $this->api->checkParams(['id:integer'], ['name', 'no', 'price', 'inventory:integer', 'type:integer', 'status:integer', 'thumb']);
+        $params = $this->api->checkParams(['id:integer'], ['name', 'no', 'price', 'inventory:integer', 'type:integer', 'status:integer', 'thumb', 'images']);
         if (count($params) < 2) {
             return $this->api->error('没有修改的参数～');
         }
@@ -127,13 +128,13 @@ class GoodsController extends Controller
     public function addGoodsType()
     {
         $params = $this->api->checkParams(['name']);
-        $goods_type = StoreGoodsType::where($params)->fisrt();
+        $goods_type = StoreGoodsType::where($params)->first();
         if (isset($goods_type)) {
             return $this->api->error($params['name'] . '已经存在，请不要重复添加种类');
         }
         $max = StoreGoodsType::max('level');
         $params['level'] = empty($max) ? 1 : ++$max;
-        return $this->api->insert_message(StoreGoodsType::insert($params), '商品添种类加成功', '商品种类添加失败，服务器异常');
+        return $this->api->insert_message(StoreGoodsType::insertGetId($params), '商品添种类加成功', '商品种类添加失败，服务器异常');
     }
     public function updateGoodsType()
     {
@@ -161,6 +162,6 @@ class GoodsController extends Controller
     }
     public function allGoodsType()
     {
-        return $this->api->datas(StoreGoodsType::orderBy('id', 'desc')->get());
+        return $this->api->datas(StoreGoodsType::orderBy('level')->get());
     }
 }

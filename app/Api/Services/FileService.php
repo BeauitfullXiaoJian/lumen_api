@@ -90,7 +90,7 @@ class FileService implements FileContract
     //根据文件url删除文件
     public function removeFile($url)
     {
-        $filename = "$this->file_path\\$url";
+        $filename = "$this->file_path/$url";
         if (file_exists($filename)) {
             unlink($filename);
             return true;

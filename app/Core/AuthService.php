@@ -7,10 +7,10 @@
  */
 namespace App\Core;
 
-use App\Core\AuthContract;
-use App\Models\AccessUser;
-use App\Models\AccessLogin;
 use App\Classes\UserInfo;
+use App\Core\AuthContract;
+use App\Models\AccessLogin;
+use App\Models\AccessUser;
 use Illuminate\Support\Facades\Crypt;
 
 class AuthService implements AuthContract
@@ -55,7 +55,7 @@ class AuthService implements AuthContract
             if (isset($uid) && $uid > 0) {
                 $this->user = $this->user->find($uid);
                 return true;
-            } 
+            }
             // 账户已经被注册
             else {
                 return false;
