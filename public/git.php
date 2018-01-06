@@ -8,16 +8,17 @@ $secret = '123456789';
 
 // 如果启用验证，并且验证失败，返回错误
 $sign = isset($_SERVER['HTTP_X-Hub-Signature']) ? $_SERVER['HTTP_X-Hub-Signature'] : '';
+var_dump($sign);
 if (!isset($sign)) {
     header('HTTP/1.1 403 Permission Denied');
     die('Permission denied.');
 }
 
 // 如果仓库目录不存在，返回错误
-if (!is_dir($local)) {
-    header('HTTP/1.1 500 Internal Server Error');
-    die('Local directory is missing');
-}
+// if (!is_dir($local)) {
+//     header('HTTP/1.1 500 Internal Server Error');
+//     die('Local directory is missing');
+// }
 
 /*
  * 这里有几点需要注意：
