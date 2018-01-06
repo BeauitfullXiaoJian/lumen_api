@@ -2,21 +2,22 @@
 
 // 本地仓库路径
 $local = __DIR__;
-
 // 安全验证字符串，为空则不验证
 $secret = '123456789';
+// HASH-SHA1
+$algo = 'sha1';
 
-// 如果启用验证，并且验证失败，返回错误
 $sign = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
-$payload = $_POST['payload'];
 if (!isset($sign)) {
     header('HTTP/1.1 403 Permission Denied');
     die('Permission denied.');
 }
-$secret = 'sha1=' . sha1($payload);
-if ($sign !== $secret) {
+
+$payload = file_get_contents('php://input');
+$_sign = 'sha1=' . hash_hmac($algo, $payload, $secret);
+if ($sign !== $_sign) {
     header('HTTP/1.1 403 Permission Denied');
-    die('sign error.' . $secret);
+    die('sign error.');
 }
 
 // 如果仓库目录不存在，返回错误
@@ -61,8 +62,7 @@ if ($sign !== $secret) {
  * `Host key verification failed.`
  *
  */
-
-echo shell_exec("cd {$local}");
-echo shell_exec("cd ..");
-echo shell_exec("git pull 2>&1");
+// echo shell_exec("cd {$local}\..");
+echo shell_exec("git -C {$local}/.. pull 2>&1");
+echo shell_exec('whoami');
 die("done " . date('Y-m-d H:i:s', time()));
