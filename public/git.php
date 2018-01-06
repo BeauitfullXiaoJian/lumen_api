@@ -13,6 +13,11 @@ if (!isset($sign)) {
     header('HTTP/1.1 403 Permission Denied');
     die('Permission denied.');
 }
+$secret = 'sha1=' . sha1($secret);
+if ($sign !== $secret) {
+    header('HTTP/1.1 403 Permission Denied');
+    die('sign error.');
+}
 
 // 如果仓库目录不存在，返回错误
 // if (!is_dir($local)) {
@@ -56,6 +61,7 @@ if (!isset($sign)) {
  * `Host key verification failed.`
  *
  */
+
 echo shell_exec("cd {$local}");
 echo shell_exec("cd ..");
 echo shell_exec("git pull 2>&1");
