@@ -16,7 +16,7 @@ if (!isset($sign)) {
 $secret = 'sha1=' . sha1($secret);
 if ($sign !== $secret) {
     header('HTTP/1.1 403 Permission Denied');
-    die('sign error.');
+    die('sign error.' . $secret);
 }
 
 // 如果仓库目录不存在，返回错误
