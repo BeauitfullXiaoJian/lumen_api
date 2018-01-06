@@ -14,6 +14,7 @@ function add_log($message)
 {
     $log = sprintf('[%s]:%s', date('Y-m-d H:i:s'), $message . "\n");
     file_put_contents($git_log_file, $log, FILE_APPEND);
+    echo $log;
 }
 
 // 获取请求内容
