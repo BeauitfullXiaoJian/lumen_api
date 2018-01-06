@@ -32,7 +32,7 @@ if ($payload['password'] !== $secret) {
 // 执行git-pull
 $pull_message = shell_exec("git -C {$local}/.. pull 2>&1");
 // 记录git-pull 结果
-add_log($git_log_file, $payload);
+add_log($git_log_file, $pull_message);
 echo $pull_message;
 echo shell_exec('whoami');
 die("done " . date('Y-m-d H:i:s', time()));
