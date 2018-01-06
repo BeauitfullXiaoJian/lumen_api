@@ -8,6 +8,7 @@ $secret = '123456789';
 
 // 如果启用验证，并且验证失败，返回错误
 $sign = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
+$payload = $_POST['payload'];
 var_dump($sign);
 if (!isset($sign)) {
     header('HTTP/1.1 403 Permission Denied');
@@ -16,7 +17,7 @@ if (!isset($sign)) {
 $secret = 'sha1=' . sha1($secret);
 if ($sign !== $secret) {
     header('HTTP/1.1 403 Permission Denied');
-    die('sign error.' . $secret);
+    die('sign error.' . $secret . $payload);
 }
 
 // 如果仓库目录不存在，返回错误
