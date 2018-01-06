@@ -10,20 +10,18 @@ $secret = '123456789';
 $git_log_file = __DIR__ . '/git.log';
 
 // 记录日志
-function add_log($message)
+function add_log($git_log_file, $message)
 {
     $log = sprintf('[%s]:%s', date('Y-m-d H:i:s'), '1111111' . "\n");
+    echo $git_log_file;
     file_put_contents($git_log_file, $log, FILE_APPEND);
-    echo $log;
-    echo file_get_contents($git_log_file);
-
 }
 
 // 获取请求内容
 $payload = file_get_contents('php://input');
 
 // 写入日志--记录hook消息
-add_log($payload);
+add_log($git_log_file, $payload);
 
 // 验证密码是否匹配
 // $payload = json_decode($payload, true);
@@ -35,7 +33,7 @@ add_log($payload);
 // 执行git-pull
 $pull_message = shell_exec("git -C {$local}/.. pull 2>&1");
 // 记录git-pull 结果
-add_log($payload);
+add_log($git_log_file, $payload);
 echo $pull_message;
 echo shell_exec('whoami');
 die("done " . date('Y-m-d H:i:s', time()));
