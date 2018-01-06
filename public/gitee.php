@@ -23,11 +23,11 @@ $payload = file_get_contents('php://input');
 add_log($git_log_file, $payload);
 
 // 验证密码是否匹配
-// $payload = json_decode($payload, true);
-// if ($payload['password'] !== $secret) {
-//     header('HTTP/1.1 403 Permission Denied');
-//     die('Permission denied.');
-// }
+$payload = json_decode($payload, true);
+if ($payload['password'] !== $secret) {
+    header('HTTP/1.1 403 Permission Denied');
+    die('Permission denied.');
+}
 
 // 执行git-pull
 $pull_message = shell_exec("git -C {$local}/.. pull 2>&1");
