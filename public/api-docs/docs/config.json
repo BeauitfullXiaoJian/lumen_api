@@ -1,6 +1,6 @@
 {
   "server": "",
-  "title": "LUMEN_API-DOCS",
+  "title": "LUMEN-API-DOCS",
   "headers": [
     "ng-params-one",
     "ng-params-two",
