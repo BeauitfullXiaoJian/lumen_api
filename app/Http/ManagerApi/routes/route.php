@@ -1,7 +1,7 @@
 <?php
 
-include_once 'public.php';
-include_once 'system.php';
-include_once 'goods.php';
-include_once 'tool.php';
-include_once 'loops.php';
+include 'public.php';
+include 'system.php';
+include 'goods.php';
+include 'tool.php';
+include 'loops.php';

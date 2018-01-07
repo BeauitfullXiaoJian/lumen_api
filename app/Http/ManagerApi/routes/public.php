@@ -8,7 +8,7 @@ $app->get('/', function () {return redirect('ng');});
 
 $app->group(['middleware' => 'sign'], function ($app) {
     // 用户登入
-    $app->post('/signin', function (ApiContract $api, AuthContract $auth) {
+    $app->post('signin', function (ApiContract $api, AuthContract $auth) {
 
         $params = $api->checkParams(['account:min:4|max:12', 'password:min:4|max:12', 'platform:min:4|max:10']);
 
