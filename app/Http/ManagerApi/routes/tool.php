@@ -19,5 +19,5 @@ $app->post('/tool/video', function (ApiContract $api, FileContract $file) {
 //富文本编辑文件上传接口
 $app->post('/tool/edit/upload', function (ApiContract $api, FileContract $file) {
     $params = $api->checkParams(['file:mimetypes:video/*,image/*']);
-    return ['link' => "http://" . $_SERVER['SERVER_ADDR'] . "/" . $file->saveFileTo('file', 'upload')];
+    return ['link' => env('APP_URL', 'http://localhost') . "/" . $file->saveFileTo('file', 'upload')];
 });

@@ -13,7 +13,7 @@ class FileService implements FileContract
 
     public function __construct()
     {
-        $this->file_path = $_SERVER['DOCUMENT_ROOT'] . '/';
+        $this->file_path = realpath(__DIR__ . '/../../../public') . '/';
     }
 
     //修改文件保存路径

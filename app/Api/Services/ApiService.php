@@ -9,18 +9,20 @@ class ApiService implements ApiContract
 {
     use ApiTrait;
 
-    public function __construct(){ }
+    public function __construct()
+    {
+    }
 
-    function checkParams($params = [], $exp = [], $formate = [], $message = []){
+    function checkParams($params = [], $exp = [], $formate = [], $message = [])
+    {
 
         $params = $this->getParams($params, $exp, $formate, $message);
 
-        if($params['result']){
+        if ($params['result']) {
             return $params['datas'];
-        }
-        else{
-            printf(json_encode($params));
-            exit();
+        } else {
+            header('Content-Type:application/json');
+            exit(json_encode($params));
         }
     }
 }

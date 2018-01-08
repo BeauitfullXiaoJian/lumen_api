@@ -26,6 +26,19 @@
                     "type": "file"
                 }
             ]
+        },
+        {
+            "title": "富文本文件上传图片/视频",
+            "description": "",
+            "url": "/tool/edit/upload",
+            "method": "post",
+            "inputs": [
+                {
+                    "name": "file",
+                    "description": "文件",
+                    "type": "file"
+                }
+            ]
         }
     ]
 }
