@@ -77,7 +77,7 @@ class Alipay
         $other_info = "&method=alipay.trade.app.pay&charset=utf-8&version=1.0&sign_type=RSA2&notify_url=" . $notify_url;
         
         //用户私钥
-        $private_key = $this->get_private_key('MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQChmYzzhvlPC/se38nK95VBxl7SWfp37FmifueGFw/9yy/rq4JsQYd1rr4o9fCI13qQScIzN/qtr+AHvr4ReGuixAeFcpmFBLtf6Upe63Jkn3pHTCVjViAlba3FMdqx0UtSeK1E+/WoY4QYEUeiv1hon6IueJRm65uN6t7411ikXm4ViHqTiKoJXTSYCp8mIsmwAsiJTIQt7TcjP6HKT4dcsx5q8zWfngYgQflqj1sJpu1b5kaKKtHAphdeZ+hUradxEFj29NsLgRu3YAHutwMCOvZvbmyTi/I4s0823x0uhRqdm5dPp6HNYkJhEiuJzuIhmcgLKernXAi6G25ZXsbVAgMBAAECggEAfrgI9mIuF5U+izxTYcx5h0WFz49tQCLfOvQmm1h0WsC9SCGKuVc9YMPxK++Hedb2rjSYi09nTFGw7IHfS5XRWaY8e6GcztkiEZi/j+UzI8KGwWftnZLIzHDQJeTtKCkF1pr4zDKDtVKsH69VLEK9kfUz2RsGzBoPNd8qj5lWUjTPP0aOPU6YwBXxvu9mne6vZ+AgqYeMQttVj5HiK9iOcKQ3R2nGo5iHbzDDjl/Oxu8Jf+HAbHRcRJgFpsz6SD0j8xvhOiER0jTPub1FYhsJSvGm3D9AWhv8i9zsw9Xho6cVktLA5OFPlJCEGov8XXierskakwEd314WI64+kIfV4QKBgQD+YR5AzotxIM2nq42aJHOvznIJFyLYhS393TlTuMIyfu0+4DgeTNyXffnjNKTLkrEstRwppZVuS2IJcxvhezMobuwZrqEq2/gIEk1UUlpj4fI2NNFsxW80YLYL3yYrhdcyzqCA8tEGiYneUpurqjvGVeejDPv9eeX/+eel+DCZ+QKBgQCioRzpWF7DXRAKv/+jt8Sp+cwfp1z+wI4f8tAVYaJ7LrAUdNUN0mTDQTAT3RnLH5jIPlzg+vnhSK5DDomRF703Xo7EpR1Bq+xbUdamx4YQo0QN7LQPakNYI4zRwzfbsC1/lnhRDPC6DQEe3ULQER/3o3eOZ3QGzO4dGyQf+pxqvQKBgQCtyOGnOrRO7C8zvmL2DLMwR2TmyvSWYZ4DEnDIvq+FWetxCjOsl6wYnwrp6xwuq5/5QB3mYeZNvJhUhlxk1gskM2t/PCuFIVQ5B2/nDIAOPt1/pOPyYIvRh8S3JZNpJn3XiwxiLAEbazlSNrN9OsatgCDI5uT8zZuRHkTgwUdK2QKBgB7nivz05B0wBCpmzgeolmDOrXGedlea8+cyV0SY5y2Nc7yPbyVPRAKu0poTvCETgg8ber7uMqoTC7qGerHt1vE8sNjBn8upBiNca/QJmnpy7C3RO25qfR20s7/w3x6KXjsOtxJ/6QcSDZJ17YpolrCSidev5SadruotDDJfh3XpAoGAZlW8CKavJ7zTPobrqmef+PQqR7s5icBe0+d9uqCXdpq6dVlIX1ZPdXn64QM0MvF60U8estyVCBVwKnVZONjhEUW4hrvbGIdlvjc8TWrzbj20e7kVRzJeeARrHAz7TiyuD0gPlRx5cT1Q4dU+h4aaw08F22vuxTXB/8qtazniIes=');
+        $private_key = $this->get_private_key($this->private_key);
 
         /*---------------拼接数据，生成原始串------------*/
 
@@ -94,7 +94,7 @@ class Alipay
         /*-------------------生成签名-------------------*/
 
         $signature = '';
-        openssl_sign($data, $signature, $this->private_key, OPENSSL_ALGO_SHA256);
+        openssl_sign($data, $signature, $private_key, OPENSSL_ALGO_SHA256);
         openssl_free_key($private_key);
         $signature = base64_encode($signature);
         $signature = urlencode($signature);
