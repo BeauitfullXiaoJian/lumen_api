@@ -42,7 +42,7 @@ $app->get('/alipay/order/home', function (ApiContract $api) {
 });
 
 // 异步通知地址
-$app->get('/alipay/order/notify_url', function (ApiContract $api) {
+$app->post('/alipay/order/notify_url', function (ApiContract $api) {
 
     // 获取所有请求参数
     $return_params = $api->all();

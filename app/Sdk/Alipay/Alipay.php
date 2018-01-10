@@ -80,7 +80,6 @@ class Alipay
         $private_key = $this->get_private_key($this->private_key);
 
         /*---------------拼接数据，生成原始串------------*/
-
         foreach ($biz_content as $key => $value) {
             $biz_content[$key] = urlencode($value);
         }
@@ -148,7 +147,7 @@ class Alipay
         
         //其他附加参数，编码，格式，api接口，异步通知地址,此处数据一般不变
         $other_info = "&method=alipay.trade.page.pay&charset=utf-8&version=1.0&sign_type=RSA2&notify_url=" . $notify_url . "&return_url=" . $return_url;
-        
+
         //用户私钥
         $private_key = $this->get_private_key($this->private_key);
 
