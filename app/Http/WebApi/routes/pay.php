@@ -52,7 +52,7 @@ $app->get('/alipay/order/notify_url', function (ApiContract $api) {
     $check_result = $pay->notifyCheck($return_params);
 
     if ($check_result['result']) {
-        StorePayLog::where(['type' => '支付宝', 'ordersn' => $check_result['ordersn']])->update(['params' => $return_params, 'status' => 1]);
+        StorePayLog::where(['type' => '支付宝', 'ordersn' => '20180110151538'])->update(['params' => $return_params, 'status' => 1]);
         return 'success';
     } else {
         return 'fail';
