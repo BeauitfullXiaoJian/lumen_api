@@ -31,3 +31,6 @@ protected $fillable = ['username', 'email', 'password'];
 
 ## 优雅链接
 try_files $uri $uri/ /index.php?$query_string;
+
+## 单元测试
+phpunti tests/PayTest

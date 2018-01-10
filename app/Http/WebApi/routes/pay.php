@@ -46,15 +46,23 @@ $app->get('/alipay/order/notify_url', function (ApiContract $api) {
 
     // 获取所有请求参数
     $return_params = $api->all();
-
     // 初始化支付对象，验证签名
     $pay = new Alipay();
     $check_result = $pay->notifyCheck($return_params);
-
     if ($check_result['result']) {
-        StorePayLog::where(['type' => '支付宝', 'ordersn' => '20180110151538'])->update(['params' => json_encode($return_params), 'status' => 1]);
+        StorePayLog::where(['type' => '支付宝', 'ordersn' => $return_params['out_trade_no']])->update([
+            'params' => json_encode($return_params),
+            'status' => 1,
+            'no' => $return_params['trade_no'],
+        ]);
         return 'success';
     } else {
+        StorePayLog::insert([
+            'price' => 0,
+            'ordersn' => ‘0’,
+            'type' => '支付宝-错误',
+            'params' => json_encode($return_params),
+        ]);
         return 'fail';
     }
 });
