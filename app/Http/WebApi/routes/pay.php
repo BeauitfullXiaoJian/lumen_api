@@ -59,7 +59,7 @@ $app->get('/alipay/order/notify_url', function (ApiContract $api) {
     } else {
         StorePayLog::insert([
             'price' => 0,
-            'ordersn' => ‘0’,
+            'ordersn' => '0',
             'type' => '支付宝-错误',
             'params' => json_encode($return_params),
         ]);

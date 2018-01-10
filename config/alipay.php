@@ -30,5 +30,5 @@ return [
     'return_url' => "http://ts.cool1024.com/web/alipay/order/home",
 
     //异步通知地址
-    'notify_url' => " http ://ts.cool1024.com/web/alipay/order/notify_url",
+    'notify_url' => "http://ts.cool1024.com/web/alipay/order/notify_url",
 ];
