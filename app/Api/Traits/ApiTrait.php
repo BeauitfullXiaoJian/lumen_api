@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Validator;
 trait ApiTrait
 {
 
+    public function all()
+    {
+        return Request::all();
+    }
+
     public function getParam($param)
     {
         $validator_target = [];

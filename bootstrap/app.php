@@ -107,5 +107,6 @@ $app->group(['namespace' => 'App\Http\WebApi\Controllers'], function ($app) {
 
 // 加载配置文件
 $app->configure('rsa');
+$app->configure('alipay');
 
 return $app;

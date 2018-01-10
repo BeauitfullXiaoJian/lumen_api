@@ -8,6 +8,7 @@
     "ng-params-four"
   ],
   "docs": [
+    "sdk.json",
     "tool.json",
     "auth.json",
     "menu.json",

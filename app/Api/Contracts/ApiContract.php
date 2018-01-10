@@ -5,6 +5,9 @@ namespace App\Api\Contracts;
 interface ApiContract
 {
 
+    //try to get all request params
+    public function all();
+
     //try to get some param and auto exit
     public function checkParams($params = [], $exp = [], $formate = [], $message = []);
 

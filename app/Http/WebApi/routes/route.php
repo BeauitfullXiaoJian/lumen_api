@@ -2,4 +2,6 @@
 use App\Api\Contracts\ApiContract;
 use App\Core\AuthContract;
 
-// include_once 'access.php';
+$app->group(['prefix' => 'web'], function ($app) {
+    include 'pay.php';
+});

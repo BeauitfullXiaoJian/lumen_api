@@ -1,0 +1,19 @@
+{
+    "title": "SDK测试",
+    "forms": [
+        {
+            "title": "支付宝-APP下单测试",
+            "description": "",
+            "url": "/web/alipay/app/order/new",
+            "method": "get",
+            "inputs": []
+        },
+        {
+            "title": "支付宝-PC网站下单测试--请直接在浏览器中输入此地址进行测试",
+            "description": "这个接口不可测试！！！！！，请在浏览器直接输入此地址进行测试",
+            "url": "/web/alipay/pc/order/new",
+            "method": "get",
+            "inputs": []
+        }
+    ]
+}
