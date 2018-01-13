@@ -26,9 +26,9 @@ return [
     // 支付宝网关
     'gateway' => 'https://openapi.alipaydev.com/gateway.do',
 
-    //同步跳转
+    // 同步跳转
     'return_url' => "http://ts.cool1024.com/web/alipay/order/home",
 
-    //异步通知地址
+    // 异步通知地址
     'notify_url' => "http://ts.cool1024.com/web/alipay/order/notify_url",
 ];

@@ -2,11 +2,15 @@
 use App\Api\Contracts\ApiContract;
 use App\Core\AuthContract;
 use Illuminate\Support\Facades\Request;
+use App\Models\AccessRole;
 
 // 首页-API-DOCS
-$app->get('/', function () {return redirect('ng');});
+$app->get('/', function () {
+    return redirect('ng');
+});
 
 $app->group(['middleware' => 'sign'], function ($app) {
+    
     // 用户登入
     $app->post('signin', function (ApiContract $api, AuthContract $auth) {
 
@@ -46,7 +50,7 @@ $app->group(['middleware' => 'sign'], function ($app) {
         return $api->success("退出成功~");
     });
 
-    // 权限令牌校验(仅开发模式下可用)
+    // 权限令牌校验
     $app->post('/check', function (ApiContract $api, AuthContract $auth) {
 
         $params = $api->checkParams(
@@ -57,6 +61,7 @@ $app->group(['middleware' => 'sign'], function ($app) {
 
         if ($auth->checkToken($params['secret'], $params['token'], $params['platform'])) {
             $user = $auth->user;
+            $user->rolename = AccessRole::find($user->role)->name;
             return $api->datas($user);
         } else {
             return $api->error("未授权的令牌~");

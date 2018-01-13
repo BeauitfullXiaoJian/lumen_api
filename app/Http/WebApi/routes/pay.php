@@ -16,7 +16,7 @@ $app->get('/alipay/app/order/new', function (ApiContract $api) {
     return $api->datas($order_data);
 });
 
-// 获取app支付订单数据
+// 获取PC-WEB支付订单数据
 $app->get('/alipay/pc/order/new', function (ApiContract $api) {
     $pay = new Alipay();
     $order = [
