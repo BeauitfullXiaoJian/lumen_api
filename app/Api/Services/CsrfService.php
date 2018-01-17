@@ -21,6 +21,9 @@ class CsrfService implements CsrfContract
 
     public function check($token_key = 'XSRF-TOKEN')
     {
+        if (!issert($_SESSION[$token_key], $_COOKIE[$token_key])) {
+            return false;
+        }
         return $_SESSION[$token_key] === $_COOKIE[$token_key];
     }
 }
