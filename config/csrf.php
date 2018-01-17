@@ -5,6 +5,8 @@
  */
 return [
     'ignore' => [
-        'signin'//登入接口
+        'signin',//登入接口
+        'check',//校验接口
+        'signup',//注册接口
     ],
 ];
