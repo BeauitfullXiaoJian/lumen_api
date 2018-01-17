@@ -2,9 +2,9 @@
 
 namespace App\Api\Services;
 
-use App\Api\Contracts\HttpContract;
+use App\Api\Contracts\CsrfContract;
 
-class CsrfService implements HttpContract
+class CsrfService implements CsrfContract
 {
     private $token_length = 20;
 
@@ -15,7 +15,7 @@ class CsrfService implements HttpContract
 
     public function update($token_key = 'XSRF-TOKEN')
     {
-        $_SESSION[$token_key] = str_random($token_length);
+        $_SESSION[$token_key] = str_random($this->token_length);
         setcookie($token_key, $_SESSION[$token_key]);
     }
 

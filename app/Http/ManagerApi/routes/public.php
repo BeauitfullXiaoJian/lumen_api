@@ -1,7 +1,7 @@
 <?php
 use App\Api\Contracts\ApiContract;
 use App\Core\AuthContract;
-use App\Core\CsrfContract;
+use App\Api\Contracts\CsrfContract;
 use Illuminate\Support\Facades\Request;
 use App\Models\AccessRole;
 
