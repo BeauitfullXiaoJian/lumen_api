@@ -43,8 +43,9 @@ class CsrfMiddleware
             $request->method() === 'GET' ||
             $request->method() === 'OPTIONS' ||
             $this->csrf->check() === true) {
+            dd($this->csrf->check());
             return $next($request);
         }
-        return response($this->api->error('csrf error'), 500);
+        return response($this->api->error('csrf error'), 401);
     }
 }
