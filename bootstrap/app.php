@@ -81,9 +81,11 @@ $app->routeMiddleware([
 |
  */
 
+$app->register(App\Api\Providers\HttpServiceProvider::class);
 $app->register(App\Api\Providers\FileServiceProvider::class);
 $app->register(App\Api\Providers\ApiServiceProvider::class);
 $app->register(App\Core\AuthServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

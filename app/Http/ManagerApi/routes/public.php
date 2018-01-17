@@ -60,6 +60,7 @@ $app->group(['middleware' => 'sign'], function ($app) {
         );
 
         if ($auth->checkToken($params['secret'], $params['token'], $params['platform'])) {
+            setcookie('XSRF-TOKEN', str_random(20), time() + 7 * 24 * 60 * 60);
             $user = $auth->user;
             $user->rolename = AccessRole::find($user->role)->name;
             return $api->datas($user);

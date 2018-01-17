@@ -2,8 +2,8 @@
 
 /**
  * @author xiaojian
- * @file AdminController.php
- * @info 系统账号控制器
+ * @file GoodsController.php
+ * @info 商品管理控制器
  * @date 2017年8月23日
  */
 

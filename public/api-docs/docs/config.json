@@ -15,6 +15,7 @@
     "permission.json",
     "role.json",
     "admin.json",
-    "goods.json"
+    "goods.json",
+    "vip.json"
   ]
 }

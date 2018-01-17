@@ -1,5 +1,6 @@
 <?php
 
-function api_test_function() {
-    
+function api_test_function()
+{
+
 }

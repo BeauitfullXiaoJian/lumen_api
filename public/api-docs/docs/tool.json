@@ -39,6 +39,13 @@
                     "type": "file"
                 }
             ]
+        },
+        {
+            "title": "获取一些虚假的测试用户数据",
+            "description": "从https://randomuser.me下载一些测试用户数据到用户表",
+            "url": "/tool/download/randomuser",
+            "method": "get",
+            "inputs": []
         }
     ]
 }

@@ -5,3 +5,4 @@ include 'system.php';
 include 'goods.php';
 include 'tool.php';
 include 'loops.php';
+include 'vip.php';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: zhao
@@ -6,16 +7,18 @@
  * Time: 上午10:34
  */
 
-namespace App\Http\WebApi;
+namespace App\Http\WebApi\Controllers;
 
 use App\Api\Contracts\ApiContract;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
-class Controller extends BaseController {
+class Controller extends BaseController
+{
 
     protected $api;
 
-    public function __construct(ApiContract $api) {
+    public function __construct(ApiContract $api)
+    {
         $this->api = $api;
     }
 

@@ -1,0 +1,23 @@
+{
+    "title": "测试模块--会员管理",
+    "forms": [
+        {
+            "title": "查询会员/获取会员列表",
+            "description": "",
+            "url": "/vip/user/search",
+            "method": "get",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "description": "查询数据量",
+                    "type": "text"
+                },
+                {
+                    "name": "offset",
+                    "description": "查询偏移量",
+                    "type": "text"
+                }
+            ]
+        }
+    ]
+}
