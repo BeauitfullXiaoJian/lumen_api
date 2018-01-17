@@ -1,6 +1,7 @@
 <?php
 use App\Api\Contracts\ApiContract;
 use App\Core\AuthContract;
+use App\Core\CsrfContract;
 use Illuminate\Support\Facades\Request;
 use App\Models\AccessRole;
 
@@ -51,16 +52,15 @@ $app->group(['middleware' => 'sign'], function ($app) {
     });
 
     // 权限令牌校验
-    $app->post('/check', function (ApiContract $api, AuthContract $auth) {
+    $app->post('/check', function (ApiContract $api, AuthContract $auth, CsrfContract $csrf) {
 
         $params = $api->checkParams(
             ['ng-params-one:min:4|max:100', 'ng-params-two:min:30|max:200', 'ng-params-three:max:10'],
             [],
             ['ng-params-one' => 'secret', 'ng-params-two' => 'token', 'ng-params-three' => 'platform']
         );
-
         if ($auth->checkToken($params['secret'], $params['token'], $params['platform'])) {
-            setcookie('XSRF-TOKEN', str_random(20), time() + 7 * 24 * 60 * 60);
+            $csrf->update();
             $user = $auth->user;
             $user->rolename = AccessRole::find($user->role)->name;
             return $api->datas($user);

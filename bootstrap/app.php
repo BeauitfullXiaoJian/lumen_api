@@ -60,9 +60,9 @@ $app->singleton(
 |
  */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    App\Core\CsrfMiddleware::class
+]);
 
 $app->routeMiddleware([
     'sign' => 'App\Core\SignMiddleware',
@@ -82,6 +82,7 @@ $app->routeMiddleware([
  */
 
 $app->register(App\Api\Providers\HttpServiceProvider::class);
+$app->register(App\Api\Providers\CsrfServiceProvider::class);
 $app->register(App\Api\Providers\FileServiceProvider::class);
 $app->register(App\Api\Providers\ApiServiceProvider::class);
 $app->register(App\Core\AuthServiceProvider::class);

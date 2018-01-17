@@ -27,7 +27,7 @@ class SignMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $permission = 'default')
+    public function handle($request, Closure $next)
     {
 
         // 关闭解密&签名
