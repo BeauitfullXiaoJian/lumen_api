@@ -28,7 +28,7 @@
             ]
         },
         {
-            "title": "富文本文件上传图片/视频",
+            "title": "富文本文件上传图片/视频--要权限校验",
             "description": "",
             "url": "/tool/edit/upload",
             "method": "post",
@@ -37,6 +37,18 @@
                     "name": "file",
                     "description": "文件",
                     "type": "file"
+                },
+                {
+                    "name": "ng-params-one",
+                    "description": "客户端获取的secret"
+                },
+                {
+                    "name": "ng-params-two",
+                    "description": "客户端获取的token"
+                },
+                {
+                    "name": "ng-params-three",
+                    "description": "客户端平台名称"
                 }
             ]
         },

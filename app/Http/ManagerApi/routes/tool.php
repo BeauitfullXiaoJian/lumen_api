@@ -2,7 +2,9 @@
 use App\Api\Contracts\ApiContract;
 use App\Api\Contracts\FileContract;
 use App\Api\Contracts\HttpContract;
+use App\Core\AuthContract;
 use App\Models\StoreVipUser;
+
 // 音频上传
 $app->post('/tool/audio', function (ApiContract $api, FileContract $file) {
     $params = $api->checkParams(['audio:mimetypes:audio/*']);
@@ -18,9 +20,15 @@ $app->post('/tool/video', function (ApiContract $api, FileContract $file) {
 });
 
 // 富文本编辑文件上传接口
-$app->post('/tool/edit/upload', function (ApiContract $api, FileContract $file) {
-    $params = $api->checkParams(['file:mimetypes:video/*,image/*']);
-    return ['link' => env('APP_URL', 'http://localhost') . "/" . $file->saveFileTo('file', 'upload')];
+$app->post('/tool/edit/upload', function (ApiContract $api, FileContract $file, AuthContract $auth) {
+    $params = $api->checkParams(
+        ['file:mimetypes:video/*,image/*', 'ng-params-one:min:4|max:100', 'ng-params-two:min:30|max:200', 'ng-params-three:max:10']
+    );
+    if ($auth->checkToken($params['ng-params-one'], $params['ng-params-two'], $params['ng-params-three'])) {
+        return ['link' => env('APP_URL', 'http://localhost') . "/" . $file->saveFileTo('file', 'upload')];
+    } else {
+        return $api->error("未授权的令牌~");
+    }
 });
 
 // 从https://randomuser.me下载一些测试用户数据到用户表
