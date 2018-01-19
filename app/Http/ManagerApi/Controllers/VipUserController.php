@@ -63,4 +63,16 @@ class VipUserController extends Controller
         // 方案二,使用api特性中的data方法,如果参数是空值,会返回错误信息
         // return $this->api->data(StoreVipUser::find($params['id']), 'success', '请求的用户数据不存在');
     }
+
+    /**
+     * @name   修改会员详情,提供会员id和需要修改的参数
+     * @author xiaojian
+     * @return array[result:请求结果，message:操作信息,datas:查询的数据]
+     */
+    public function updateVipUser()
+    {
+        $params = $this->api->checkParams(['id:integer'], ['nick:max:45', 'phone:max:45', 'gender:integer|min:0|max:2']);
+        $vip_user = StoreVipUser::findOrFail($params['id']);;
+        return $this->api->update_message($vip_user->trySave($params, ['id']), '修改成功~', '修改失败,服务器异常~');
+    }
 }

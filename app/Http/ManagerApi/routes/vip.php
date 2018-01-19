@@ -13,4 +13,7 @@ $app->group(['middleware' => 'auth'], function ($app) {
 
     // 获取会员详情-根据会员id获取
     $app->get('/vip/user/info', 'VipUserController@getVipUser');
+
+    // 修改会员详情
+    $app->put('/vip/user/update', 'VipUserController@updateVipUser');
 });
