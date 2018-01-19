@@ -14,6 +14,13 @@
             "url": "/web/alipay/pc/order/new",
             "method": "get",
             "inputs": []
+        },
+        {
+            "title": "微信支付-APP网站下单测试",
+            "description": "",
+            "url": "/web/wechat/app/order/new",
+            "method": "get",
+            "inputs": []
         }
     ]
 }

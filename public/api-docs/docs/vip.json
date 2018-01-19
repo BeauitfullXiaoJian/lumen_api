@@ -18,6 +18,19 @@
                     "type": "text"
                 }
             ]
+        },
+        {
+            "title": "获取会员详情-根据会员id获取",
+            "description": "",
+            "url": "/vip/user/info",
+            "method": "get",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "会员id",
+                    "type": "text"
+                }
+            ]
         }
     ]
 }

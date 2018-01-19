@@ -50,8 +50,10 @@ class Handler extends ExceptionHandler
         if ($e instanceof HttpException) {
             $fe = FlattenException::create($e);
             if ($fe->getStatusCode() === 404) {
-                return response()->json(['result' => false, 'message' => 404]);
+                return response()->json(['result' => false, 'message' => '请求的接口不存在~']);
             }
+        } else if ($e instanceof ModelNotFoundException) {
+            return response()->json(['result' => false, 'message' => '请求的数据不存在~']);
         }
         return parent::render($request, $e);
     }

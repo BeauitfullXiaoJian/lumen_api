@@ -21,7 +21,7 @@ return [
     'secret' => 'RvVmYLcVwH1XBddE6hMg7jCl1J4ETa3N',
 
     // 微信网关
-    'gateway' => 'https://openapi.alipaydev.com/gateway.do',
+    'pre_pay_url' => 'https://api.mch.weixin.qq.com/pay/unifiedorder',
 
     // 同步跳转
     'return_url' => "http://ts.cool1024.com/web/alipay/order/home",

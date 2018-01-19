@@ -9,4 +9,7 @@ return [
         'check',//校验接口
         'signup',//注册接口
     ],
+    'regx' => [
+        '^wapapp/'
+    ]
 ];

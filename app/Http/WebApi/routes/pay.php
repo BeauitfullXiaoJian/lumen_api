@@ -1,5 +1,6 @@
 <?php
 use App\Sdk\Alipay\Alipay;
+use App\Sdk\Wechat\Wechat;
 use App\Api\Contracts\ApiContract;
 use App\Models\StorePayLog;
 
@@ -72,4 +73,17 @@ $app->post('/alipay/order/notify_url', function (ApiContract $api) {
         ]);
         return 'fail';
     }
+});
+
+// 获取app支付订单数据--微信支付
+$app->get('/wechat/app/order/new', function (ApiContract $api) {
+    $pay = new Wechat();
+    $order = [
+        'price' => 1000,
+        'title' => '测试支付订单',
+        'body' => '测试公司名称',
+        'ordersn' => date('YmdHis'),
+    ];
+    $order_data = $pay->initAppOrderData($order['price'], $order['title'], $order['body'], $order['ordersn']);
+    return $api->datas($order_data);
 });

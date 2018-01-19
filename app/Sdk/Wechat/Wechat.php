@@ -9,37 +9,57 @@ namespace App\Sdk\Wechat;
 class Wechat
 {
 
-    private $alipay_public_key;
-    private $private_key;
     private $app_id;
+    private $mch_id;
+    private $secret_key;
     private $notify_url;
     private $return_url;
-    private $gateway;
+    private $pre_pay;
 
     public function __construct()
     {
         $this->app_id = config('wechat.app_id');
         $this->mch_id = config('wechat.mch_id');
-        $this->secret_key = config('wechat.secret_key');
+        $this->secret_key = config('wechat.secret');
         $this->notify_url = config('wechat.notify_url');
         $this->return_url = config('wechat.return_url');
-        $this->gateway = config('wechat.gateway');
+        $this->pre_pay_url = config('wechat.pre_pay_url');
     }
 
-     /*
-     * exp      用户订单信息生成--PC-WEB
+    /*
+     * exp      用户订单信息生成--APP
      * params   array[price,title,body,ordersn]
      * return   string(orderinfo)
      */
     public function initAppOrderData($price, $title, $body, $ordersn)
     {
+        return $this->initOrderData($price, $title, $body, $ordersn, 'APP');
+    }
+
+    /*
+     * exp      用户订单信息生成--小程序
+     * params   array[price,title,body,ordersn]
+     * return   string(orderinfo)
+     */
+    public function initSmallRoutineOrderData($price, $title, $body, $ordersn)
+    {
+        return $this->initOrderData($price, $title, $body, $ordersn, 'JSAPI');
+    }
+
+    /*
+     * exp      统一用户订单信息生成
+     * params   array[price,title,body,ordersn]
+     * return   string(orderinfo)
+     */
+    public function initOrderData($price, $title, $body, $ordersn, $trade_type)
+    {
         $pay_array = [];
         //生成预支付交易单的必选参数:
         $newPara = array();
         //应用ID
-        $newPara["appid"] = "wx945445c4bf50482f";
+        $newPara["appid"] = $this->app_id;
         //商户号
-        $newPara["mch_id"] = "1430589002";
+        $newPara["mch_id"] = $this->mch_id;
         //设备号
         $newPara["device_info"] = "WEB";
          //随机字符串
@@ -53,9 +73,9 @@ class Wechat
         //终端IP
         $newPara["spbill_create_ip"] = $_SERVER["REMOTE_ADDR"];
         //通知地址
-        $newPara["notify_url"] = $this->;
+        $newPara["notify_url"] = $this->notify_url;
         //交易类型
-        $newPara["trade_type"] = "APP";
+        $newPara["trade_type"] = $trade_type;
         //签名
         $newPara["sign"] = $this->produce_wechat_sign($newPara);
         //传参
@@ -85,7 +105,7 @@ class Wechat
 
     private function send_pre_pay_curl($xml_data)
     {
-        $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+        $url = $this->pre_pay_url;
         $header[] = "Content-type: text/xml";
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
@@ -123,7 +143,7 @@ class Wechat
     public function produce_wechat_sign($new_para)
     {
         $stringA = $this->get_sign_content($new_para);
-        $stringSignTemp = $stringA . "&key=RvVmYLcVwH1XBddE6hMg7jCl1J4ETa3N";
+        $stringSignTemp = $stringA . "&key={$this->secret_key}";
         return strtoupper(MD5($stringSignTemp));
     }
 
@@ -139,7 +159,7 @@ class Wechat
             "timestamp" => $newPara['timeStamp'],
         );
         $stringA = self::get_sign_content($secondSignArray);
-        $stringSignTemp = $stringA . "&key=RvVmYLcVwH1XBddE6hMg7jCl1J4ETa3N";
+        $stringSignTemp = $stringA . "&key={$this->secret_key}";
         return strtoupper(MD5($stringSignTemp));
     }
 

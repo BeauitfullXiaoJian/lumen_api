@@ -112,5 +112,6 @@ $app->group(['namespace' => 'App\Http\WebApi\Controllers'], function ($app) {
 $app->configure('rsa');
 $app->configure('alipay');
 $app->configure('csrf');
+$app->configure('wechat');
 
 return $app;
