@@ -131,6 +131,8 @@ return [
         'no' => '编号',
         'price' => '价格',
         'inventory' => '库存',
+        'credit' => '积分',
+        'vip_credit' => '会员积分',
     ],
 
 ];

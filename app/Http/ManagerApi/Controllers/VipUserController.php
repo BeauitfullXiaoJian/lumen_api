@@ -72,7 +72,31 @@ class VipUserController extends Controller
     public function updateVipUser()
     {
         $params = $this->api->checkParams(['id:integer'], ['nick:max:45', 'phone:max:45', 'gender:integer|min:0|max:2']);
-        $vip_user = StoreVipUser::findOrFail($params['id']);;
+        $vip_user = StoreVipUser::findOrFail($params['id']);
         return $this->api->update_message($vip_user->trySave($params, ['id']), '修改成功~', '修改失败,服务器异常~');
+    }
+
+    /**
+     * @name   会员充值,提供会员id和充值金额-最多充值1000
+     * @author xiaojian
+     * @return array[result:请求结果，message:操作信息,datas:查询的数据]
+     */
+    public function reChargeCredit()
+    {
+        $params = $this->api->checkParams(['id:integer', 'vip_credit:integer|min:1|max:1000']);
+        $vip_user = StoreVipUser::findOrFail($params['id']);
+        return $this->api->update_message($vip_user->increment('vip_credit', $params['vip_credit']), '充值成功~', '充值失败,服务器异常~');
+    }
+
+    /**
+     * @name   删除会员,提供会员id和需要修改的参数
+     * @author xiaojian
+     * @return array[result:请求结果，message:操作信息,datas:查询的数据]
+     */
+    public function deleteVipUser()
+    {
+        $params = $this->api->checkParams(['id:integer']);
+        $vip_user = StoreVipUser::findOrFail($params['id']);
+        return $this->api->delete_message($vip_user->delete(), '删除成功～', '修改失败,服务器异常~');
     }
 }

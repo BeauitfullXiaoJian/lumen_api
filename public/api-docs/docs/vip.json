@@ -59,6 +59,37 @@
                     "type": "text"
                 }
             ]
+        },
+        {
+            "title": "删除会员",
+            "description": "",
+            "url": "/vip/user/delete",
+            "method": "delete",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "会员id",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "title": "会员充值--充值积分",
+            "description": "",
+            "url": "/vip/user/recharge",
+            "method": "put",
+            "inputs": [
+                {
+                    "name": "id",
+                    "description": "会员id",
+                    "type": "text"
+                },
+                {
+                    "name": "credit",
+                    "description": "充值的积分",
+                    "type": "text"
+                }
+            ]
         }
     ]
 }

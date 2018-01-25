@@ -16,4 +16,10 @@ $app->group(['middleware' => 'auth'], function ($app) {
 
     // 修改会员详情
     $app->put('/vip/user/update', 'VipUserController@updateVipUser');
+
+    // 删除会员
+    $app->delete('/vip/user/delete', 'VipUserController@deleteVipUser');
+
+    // 会员充值
+    $app->put('/vip/user/recharge', 'VipUserController@reChargeCredit');
 });
