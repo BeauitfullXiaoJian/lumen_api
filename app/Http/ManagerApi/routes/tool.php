@@ -4,6 +4,7 @@ use App\Api\Contracts\FileContract;
 use App\Api\Contracts\HttpContract;
 use App\Core\AuthContract;
 use App\Models\StoreVipUser;
+use App\Events\ExampleEvent;
 
 // 音频上传
 $app->post('/tool/audio', function (ApiContract $api, FileContract $file) {
@@ -57,4 +58,10 @@ $app->get('/tool/download/randomuser', function (ApiContract $api, HttpContract 
     }
     StoreVipUser::insert($users);
     return $users;
+});
+
+// 事件测试
+$app->get('/event/test', function (ApiContract $api) {
+    event(new ExampleEvent());
+    return $api->success('event test success');
 });
