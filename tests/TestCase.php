@@ -12,6 +12,8 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
      */
     public function createApplication()
     {
+        // 单元测试关闭CSRF
+        putenv('APP_CSRF_CHECK=false');
         $this->log_file_path = realpath(__DIR__ . '/../storage/logs/') . '/' . date('Y-m-d') . '.txt';
         return require __DIR__ . '/../bootstrap/app.php';
     }
