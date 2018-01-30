@@ -1,10 +1,9 @@
-# Serving Your Application
+## Serving Your Application
 `php -S localhost:8000 -t public`
 
-# some Facades
+## Facades
 
 ```
- 
 'Illuminate\Support\Facades\App', 'App'
 'Illuminate\Support\Facades\Auth', 'Auth'
 'Illuminate\Support\Facades\Bus', 'Bus'
@@ -25,12 +24,9 @@
 
 ```
 
-# some erro in orm
-MassAssignmentException=>
-protected $fillable = ['username', 'email', 'password'];
-
-## 优雅链接
+## nginx setting
 try_files $uri $uri/ /index.php?$query_string;
 
-## 单元测试
-phpunti tests/PayTest
+## test 单元测试
+1. phpunti 全部测试
+2. phpunti tests/PayTest //指定文件
