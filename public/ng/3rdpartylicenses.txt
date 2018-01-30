@@ -1,4 +1,4 @@
-angular-sortablejs@2.5.0
+angular-sortablejs@2.5.1
 MIT
 MIT License
 -----------
@@ -74,7 +74,7 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-zone.js@0.8.19
+zone.js@0.8.20
 MIT
 The MIT License
 
@@ -98,22 +98,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-@angular/forms@5.1.2
+@angular/forms@5.2.2
 MIT
 MIT
 
-@angular/common@5.1.2
+angular-froala-wysiwyg@2.7.3
 MIT
 MIT
 
-@angular/core@5.1.2
+@angular/common@5.2.2
 MIT
 MIT
 
-@angular/platform-browser@5.1.2
+@angular/core@5.2.2
 MIT
 MIT
 
-@angular/router@5.1.2
+@angular/platform-browser@5.2.2
+MIT
+MIT
+
+@angular/router@5.2.2
 MIT
 MIT
