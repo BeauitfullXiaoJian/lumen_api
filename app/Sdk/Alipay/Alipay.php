@@ -248,6 +248,10 @@ class Alipay
             $return['result'] = (bool)openssl_verify($params['alipay_trade_app_pay_response'], base64_decode(stripslashes($params['sign'])), $public_key, OPENSSL_ALGO_SHA256);
             $return['message'] = $return['result'] ? "验签成功" : "验签失败";
             $return['datas'] = json_decode($params['alipay_trade_app_pay_response'], true);
+            if ($return['datas']['app_id'] != $this->app_id) {
+                $return['result'] = false;
+                $return['message'] = "消息错误";
+            }
         } else {
             $return['message'] = '参数缺失';
         }
