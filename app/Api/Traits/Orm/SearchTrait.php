@@ -62,4 +62,83 @@ trait SearchTrait
         }
         return $result;
     }
+
+    //查询字段配置(示例)
+    // private $search_params = [
+    //    "goods_id"=>['where','='],    //goods_id商品id等于某个值
+    //    "price"=>['where','>'],       //price价格大于某个值
+    //    "name"=>['where','like'],     //name名称类似某个值
+    //    "type"=>['whereIn']           //type类型属于某个区间
+    // ];
+    //后续操作配置
+    //private $search_operations = [
+    //   'created_at'=>['orderBy','desc'],//按created_at创建时间排序
+    //]
+    public function searchV2($params, $search_params = null, $search_operations = null)
+    {
+        if ($search_params === null) {
+            $search_params = isset($this->search_params) ? $this->search_params : [];
+        }
+        if ($search_operations === null) {
+            $search_operations = isset($this->search_operations) ? $this->search_operations : [];
+        }
+        $sql = $this;
+        $result = ['total' => 0, 'rows' => []];
+
+        foreach ($search_params as $judgment) {
+            $func = $judgment[0];
+            unset($judgment[0]);
+            $func_params = [];
+            foreach ($judgment as $param) {
+                if (gettype($param) === 'string') {
+                    if (substr($param, 0, 1) === '$') { //使用了变量，那么变量存在就生效，不存在就不算入查询条件
+                        if (isset($params[substr($param, 1)])) {
+                            $func_params[] = $params[substr($param, 1)];
+                        }
+                    } else { // 使用常量字符串
+                        $func_params[] = $param;
+                    }
+                } else { // 使用了其他常量
+                    $func_params[] = $param;
+                }
+            }
+            switch (count($func_params)) {
+                case 1:
+                    {
+                        $sql = $sql->$func($func_params[0]);
+                        break;
+                    }
+                case 2:
+                    {
+                        $sql = $sql->$func($func_params[0], $func_params[1]);
+                        break;
+                    }
+                case 3:
+                    {
+                        $sql = $sql->$func($func_params[0], $func_params[1], $func_params[2]);
+                        break;
+                    }
+                case 4:
+                    {
+                        $sql = $sql->$func($func_params[0], $func_params[1], $func_params[2], $func_params[3]);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+
+        }
+        $result['total'] = $sql->count();
+        if ($result['total'] > 0) {
+            foreach ($search_operations as $rule) {
+                $func = $rule[0];
+                unset($rule);
+                $sql = count($rule) === 1 ? $sql->$func($key) : $sql->$func($key, $rule[1]);
+            }
+            $result['rows'] = $sql->skip($params['offset'])->take($params['limit'])->get();
+        }
+        return $result;
+    }
 }

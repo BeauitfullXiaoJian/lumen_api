@@ -218,7 +218,6 @@ class Alipay
         $public_key = $this->get_public_key($alipay_public_key);
 
         $sign = base64_decode(stripslashes($sign));
-
         $return['result'] = (bool)openssl_verify($data, $sign, $public_key, OPENSSL_ALGO_SHA256);
 
         $return['message'] = $return['result'] ? "验签成功" : "验签失败";
@@ -230,6 +229,28 @@ class Alipay
             }
         }
 
+        return $return;
+    }
+
+    public function appPayCheck($params)
+    {
+        $alipay_public_key = $this->alipay_public_key;
+        $return = [
+            //验签结果
+            'result' => false,
+            //提示消息
+            'message' => '',
+            //可用参数
+            'datas' => array(),
+        ];
+        if (!empty($params['alipay_trade_app_pay_response']) && !empty($params['sign']) && !empty($params['sign_type'])) {
+            $public_key = $this->get_public_key($alipay_public_key);
+            $return['result'] = (bool)openssl_verify($params['alipay_trade_app_pay_response'], base64_decode(stripslashes($params['sign'])), $public_key, OPENSSL_ALGO_SHA256);
+            $return['message'] = $return['result'] ? "验签成功" : "验签失败";
+            $return['datas'] = json_decode($params['alipay_trade_app_pay_response'], true);
+        } else {
+            $return['message'] = '参数缺失';
+        }
         return $return;
     }
 
