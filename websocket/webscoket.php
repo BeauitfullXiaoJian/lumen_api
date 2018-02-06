@@ -45,6 +45,7 @@ $server->on('close', function ($server, $fd) {
 
 // 发送消息推送
 $server->on('request', function (swoole_http_request $request, swoole_http_response $response) {
+    global $server;
     // $server->connections 遍历所有websocket连接用户的fd，给所有用户推送
     foreach ($server->connections as $fd) {
         $server->push($fd, $request->get['message']);
