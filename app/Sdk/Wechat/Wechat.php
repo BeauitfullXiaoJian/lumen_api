@@ -216,129 +216,68 @@ class Wechat
         return $xmlData;
     }
 
-    // /*
-    //  * exp      异步回掉
-    //  * params   string(data)
-    //  * return   array[...]
-    //  */
-    // public function notifyCheck($params)
-    // {
-    //     $alipay_public_key = $this->alipay_public_key;
+    public function notify_sign_verification($array)
+    {
+        $new = $array;
+        unset($new['sign']);
+        $stringA = $this->get_sign_content($new);
+        $stringSignTemp = $stringA . "&key={$this->secret_key}";
+        return strtoupper(MD5($stringSignTemp));
+    }
 
-    //     $return = [
-    //         //验签结果
-    //         'result' => false,
-    //         //提示消息
-    //         'message' => '',
-    //         //可用参数
-    //         'datas' => array(),
-    //     ];
-
-    //     /*---------------剔除参数------------------*/
-
-    //     $sign = $params['sign'];
-
-    //     unset($params['sign']);
-
-    //     $sign_type = $params['sign_type'];
-
-    //     unset($params['sign_type']);
-
-    //     /*---------------数据拼接------------------*/
-    //     foreach ($params as $key => $value) {
-    //         $params[$key] = $key . '=' . $value;
-    //         $return['datas'][$key] = $value;
-    //     }
-
-    //     $data = implode('&', $params);
-
-    //     /*---------------字典排序-------------------*/
-    //     $data = $this->get_sort_data($data);
-
-    //     /*---------------开始验签-------------------*/
-    //     $public_key = $this->get_public_key($alipay_public_key);
-
-    //     $sign = base64_decode(stripslashes($sign));
-
-    //     $return['result'] = (bool)openssl_verify($data, $sign, $public_key, OPENSSL_ALGO_SHA256);
-
-    //     $return['message'] = $return['result'] ? "验签成功" : "验签失败";
-
-    //     if ($return['result']) {
-    //         if ($params['app_id'] != "app_id={$this->app_id}") {
-    //             $return['result'] = false;
-    //             $return['message'] = "消息错误";
-    //         }
-    //     }
-
-    //     return $return;
-    // }
-
-    // /*
-    //  * exp     私钥处理方法，把private_key处理为可用私钥
-    //  * pramas  string(private_key)
-    //  * return  string(private_key)
-    //  */
-    // private function get_private_key($private_key)
-    // {
-    //     $private_key = "-----BEGIN RSA PRIVATE KEY-----\n" . wordwrap($private_key, 64, "\n", true) . "\n-----END RSA PRIVATE KEY-----";
-    //     $private_key = openssl_pkey_get_private($private_key);
-    //     return $private_key;
-    // }
-
-    // /*
-    //  * exp     公钥处理方法，把public_key处理为可用公钥
-    //  * pramas  string(public_key)
-    //  * return  string(public_key)
-    //  */
-    // private function get_public_key($public_key)
-    // {
-    //     $public_key = "-----BEGIN PUBLIC KEY-----\n" . wordwrap($public_key, 64, "\n", true) . "\n-----END PUBLIC KEY-----";
-    //     $public_key = openssl_get_publickey($public_key);
-    //     return $public_key;
-    // }
-
-    // /*
-    //  * exp     字典排序，把原始数据按字母索引排序
-    //  * pramas  string(data)
-    //  * return  string(data)
-    //  */
-    // private function get_sort_data($data)
-    // {
-    //     $array = array();
-    //     $result = array();
-    //     $values = explode('&', $data);
-    //     foreach ($values as $key => $value) {
-    //         $temp = explode('=', $value);
-    //         $array[$temp[0]] = $temp[1];
-    //     }
-
-    //     ksort($array);
-    //     foreach ($array as $key => $value) {
-    //         array_push($result, $key . '=' . $value);
-    //     }
-    //     $data = implode("&", $result);
-
-    //     return $data;
-    // }
-    // /*
-    //  * exp     urlencode数据，把数据串中的值进行urlencode
-    //  * pramas  string(data)
-    //  * return  string(data)
-    //  */
-    // private function get_url_data($data)
-    // {
-    //     $array = explode('&', $data);
-    //     $keyarray = array();
-    //     foreach ($array as $key => $value) {
-    //         $temp = explode('=', $value);
-    //         $keyarray[$key] = $temp[0];
-    //         $array[$key] = urlencode($temp[1]);
-    //     }
-    //     foreach ($array as $key => $value) {
-    //         $array[$key] = $keyarray[$key] . '=' . $array[$key];
-    //     }
-    //     $data = implode("&", $array);
-    //     return $data;
-    // }
+    /*
+     * exp      异步回掉
+     * params   string(data)
+     * return   array[result:boolean,message:string,datas:array]
+     */
+    public function notifyCheck($params)
+    {
+        $return_datas = [
+            //验签结果
+            'result' => false,
+            //提示消息
+            'message' => '',
+            //可用参数
+            'datas' => array(),
+        ];
+        //解析xmldata
+        $postObj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $obj = json_decode(json_encode($postObj));
+        //file_put_contents("/home/infoback.txt", '订单号'.$obj->out_trade_no.':', FILE_APPEND);
+        //判断是否收到通信标识
+        if ($obj->return_code == "SUCCESS" && $obj->result_code == "SUCCESS") {
+            $get_data = array(
+                'appid' => $obj->appid,
+                'bank_type' => $obj->bank_type,
+                'cash_fee' => $obj->cash_fee,
+                'device_info' => $obj->device_info,
+                'fee_type' => $obj->fee_type,
+                'is_subscribe' => $obj->is_subscribe,
+                'mch_id' => $obj->mch_id,
+                'nonce_str' => $obj->nonce_str,
+                'openid' => $obj->openid,
+                'out_trade_no' => $obj->out_trade_no,
+                'result_code' => $obj->result_code,
+                'return_code' => $obj->return_code,
+                'time_end' => $obj->time_end,
+                'total_fee' => $obj->total_fee,
+                'trade_type' => $obj->trade_type,
+                'transaction_id' => $obj->transaction_id,
+                'sign' => $obj->sign,
+            );
+            if ($get_data['sign'] == $this->notify_sign_verification($get_data)) {
+                $return_datas['datas'] = $get_data;
+                $return_datas['result'] = true;
+                // return 'SUCCESS';
+            } else {
+                $return_datas['message'] = "验签失败";
+            }
+        } else {
+            $return_datas['message'] = "支付失败-业务/相应状态错误";
+            // 支付失败
+            //file_put_contents("/home/infoback.txt", "验签失败", FILE_APPEND);
+            // return 'FAIL';
+        }
+        return $return_datas;
+    }
 }

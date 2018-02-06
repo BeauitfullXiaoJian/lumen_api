@@ -176,7 +176,7 @@ class Alipay
 
 
     /*
-     * exp      异步回掉
+     * exp      异步通知验证签名-WEB-APP通用
      * params   string(data)
      * return   array[...]
      */
@@ -232,6 +232,11 @@ class Alipay
         return $return;
     }
 
+    /*
+     * exp      App支付同步通知验证签名
+     * params   string(data)
+     * return   array[...]
+     */
     public function appPayCheck($params)
     {
         $alipay_public_key = $this->alipay_public_key;

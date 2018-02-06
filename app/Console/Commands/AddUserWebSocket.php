@@ -55,8 +55,8 @@ class AddUserWebSocket extends Command
         if ($check === false) {
             $this->error('ACCESS DENIED');
         } else {
-            $this->log->socket = $socket;
-            $this->log->save();
+            $this->auth->log->socket = $socket;
+            $this->auth->log->save();
             $this->info('SUCCESS');
         }
     }
