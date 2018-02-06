@@ -32,7 +32,10 @@ $server->on('message', function ($server, $frame) {
     echo "received message: {$frame->data}\n";
     // 根据收到的消息进行不同的操作---通常我们不用websocket接受客户端消息，客户端发送消息统一用http请求
     foreach ($server->connections as $fd) {
-        $server->push($fd, json_encode(["received message", $frame->data]));
+        if ($frame->fd !== $fd) {
+            // 发送这条消息给其他人
+            $server->push($fd, json_encode(["received message", $frame->data]));
+        }
     }
 });
 
