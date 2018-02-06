@@ -34,7 +34,7 @@ $server->on('message', function ($server, $frame) {
     foreach ($server->connections as $fd) {
         if ($frame->fd !== $fd) {
             // 发送这条消息给其他人
-            $server->push($fd, json_encode(["received message", $frame->data]));
+            $server->push($fd, json_encode(["received message", $frame->data], JSON_UNESCAPED_UNICODE));
         }
     }
 });
