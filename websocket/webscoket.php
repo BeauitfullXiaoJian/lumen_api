@@ -1,5 +1,5 @@
 <?php
-$server = new swoole_websocket_server("139.129.161.216", 9502);
+$server = new swoole_websocket_server("127.0.0.1", 9502);
 
 $server->on('open', function ($server, $req) {
     echo "connection open: {$req->fd}\n";
@@ -47,12 +47,12 @@ $server->on('close', function ($server, $fd) {
 $server->on('request', function (swoole_http_request $request, swoole_http_response $response) {
     global $server;
     // $server->connections 遍历所有websocket连接用户的fd，给所有用户推送
+    return $response->end('push success');
     foreach ($server->connections as $fd) {
         if ($request->fd !== $fd) {
             $server->push($fd, $request->get['message']);
         }
     }
-    return $response->end('push success');
 });
 
 $server->start();

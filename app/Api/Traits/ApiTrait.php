@@ -15,6 +15,16 @@ use Illuminate\Support\Facades\Validator;
 trait ApiTrait
 {
 
+    public function file($key)
+    {
+        return Request::file($key);
+    }
+
+    public function input($key)
+    {
+        return Request::input($key);
+    }
+
     public function all()
     {
         return Request::all();
