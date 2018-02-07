@@ -33,4 +33,13 @@ class PayTest extends TestCase
         $this->assertEquals($response, 'success');
         $this->log('info', __class__ . '::' . __FUNCTION__, [$response]);
     }
+
+    public function testWechatOrderFind()
+    {
+        $this->call('get', '/web/wechat/app/order/search');
+        $this->assertResponseOk();
+        $response = $this->response->getContent();
+        $this->assertEquals($response, 'success');
+        $this->log('info', __class__ . '::' . __FUNCTION__, [$response]);
+    }
 }

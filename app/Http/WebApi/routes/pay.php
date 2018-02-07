@@ -108,3 +108,20 @@ $app->get('/wechat/app/order/new', function (ApiContract $api) {
     $order_data = $pay->initAppOrderData($order['price'], $order['title'], $order['body'], $order['ordersn']);
     return $api->datas($order_data);
 });
+
+// 查询订单-微信支付-通知出现异常，可以手动查询
+$app->get('/wechat/app/order/search', function (ApiContract $api) {
+    $pay = new Wechat();
+    $ordersn = "2018020509121582465282329";
+    $order_data = $pay->findOrder($ordersn);
+    if ($order_data['return_code'] !== 'SUCCESS') {
+        return $api->error("通信失败:" . $order_data['return_msg']);
+    }
+    if ($order_data['result_code'] !== 'SUCCESS') {
+        return $api->error("业务失败:" . $order_data['err_code']);
+    }
+    if ($order_data['trade_state'] !== 'SUCCESS') {
+        return $api->error("交易失败:" . $order_data['trade_state_desc']);
+    }
+    return $api->datas($order_data, '交易成功');
+});

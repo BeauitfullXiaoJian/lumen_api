@@ -76,3 +76,8 @@ $app->get('/filesystem/test', function (ApiContract $api) {
     Storage::disk('local')->put('file.txt', 'test file');
     return $api->success('filesystem test success');
 });
+
+// 文件系统测试
+$app->get('/filesystem/download', function () {
+    return response()->download(storage_path('app/images/1BKpzq5zxCxP8DWg1HskX3EOWH6zGSNExVgoBoTa.jpeg'));
+});
