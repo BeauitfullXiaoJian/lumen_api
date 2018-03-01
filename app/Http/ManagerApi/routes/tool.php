@@ -65,6 +65,30 @@ $app->get('/tool/download/randomuser', function (ApiContract $api, HttpContract 
     return $users;
 });
 
+// search方法测试
+$app->get('/traits/search', function (ApiContract $api) {
+    $params = $api->checkParams(['offset:integer', 'limit:integer'], ['params-one', 'params-two']);
+
+    // 查询配置参数
+    $search_params = [
+        // ['where', 'vip_level', 4],
+        // ['where', 'nick', 'like', '$params-one'],
+        // ['where', 'id', '>', '$params-two'],
+        ['whereIn', 'id', '$params-two'],
+        ['orderBy', 'vip_level', 'asc']
+    ];
+
+    // 格式化配置参数
+    $format_ops = [
+        'params-one' => '%$params-one%',
+        'params-two' => function ($param) {
+            return explode(',', $param);
+        },
+    ];
+    $datas = with(new StoreVipUser)->search($params, $search_params, $format_ops);
+    return $api->paginate($datas);
+});
+
 // 事件测试
 $app->get('/event/test', function (ApiContract $api) {
     event(new ExampleEvent());

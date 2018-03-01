@@ -37,6 +37,12 @@ trait SearchTrait
         if ($search_operations === null) {
             $search_operations = isset($this->search_operations) ? $this->search_operations : [];
         }
+
+        // 为了兼容，这里识别v2版本的参数，如果符合v2的参数，就使用v2方法
+        if (count($search_params) > 0 && isset($search_params[0])) {
+            return $this->searchV2($params, $search_params, $search_operations);
+        }
+
         $sql = $this;
         $result = ['total' => 0, 'rows' => []];
         foreach ($search_params as $key => $judgment) {
@@ -64,23 +70,29 @@ trait SearchTrait
     }
 
     //查询字段配置(示例)
+    
     // private $search_params = [
-    //    "goods_id"=>['where','='],    //goods_id商品id等于某个值
-    //    "price"=>['where','>'],       //price价格大于某个值
-    //    "name"=>['where','like'],     //name名称类似某个值
-    //    "type"=>['whereIn']           //type类型属于某个区间
+    //      ['where', 'vip_level', '>' ,4], //会员等级大于4
+    //      ['where', 'nick', 'like', '$params-one'], // 昵称模糊匹配$params-one
+    //      ['whereIn', 'id', '$params-two'], // id在$params-two中
+    //      ['orderBy', 'vip_level', 'asc'] // 按从小到大的等排序
     // ];
+
     //后续操作配置
-    //private $search_operations = [
-    //   'created_at'=>['orderBy','desc'],//按created_at创建时间排序
+    //private $format_operations = [
+    //   'params-one' => '%$params-one%', // 将$params中的params-one参数格式化为 '%'.$params['params-one'].'%'
+    //   'params-two' => function ($param) {
+    //        return explode(',', $param); // 将$params中的params-two参数用逗号分割成一个数组
+    //   },
     //]
-    public function searchV2($params, $search_params = null, $search_operations = null)
+
+    public function searchV2($params, $search_params = null, $format_operations = null)
     {
         if ($search_params === null) {
             $search_params = isset($this->search_params) ? $this->search_params : [];
         }
-        if ($search_operations === null) {
-            $search_operations = isset($this->search_operations) ? $this->search_operations : [];
+        if ($format_operations === null) {
+            $format_operations = isset($this->format_operations) ? $this->format_operations : [];
         }
         $sql = $this;
         $result = ['total' => 0, 'rows' => []];
@@ -91,9 +103,29 @@ trait SearchTrait
             $func_params = [];
             foreach ($judgment as $param) {
                 if (gettype($param) === 'string') {
-                    if (substr($param, 0, 1) === '$') { //使用了变量，那么变量存在就生效，不存在就不算入查询条件
+                    //使用了变量，那么变量存在就生效，不存在就不算入查询条件
+                    if (substr($param, 0, 1) === '$') {
                         if (isset($params[substr($param, 1)])) {
-                            $func_params[] = $params[substr($param, 1)];
+                            $field = substr($param, 1);
+                            // 使用了格式化操作就调用格式化操作
+                            if (isset($format_operations[$field])) {
+                                $format_type = gettype($format_operations[$field]);
+                                // 格式化操作是一个方法，就调用这个方法
+                                if ($format_type === 'object') {
+                                    $format_func = $format_operations[$field];
+                                    $func_params[] = call_user_func($format_func, $params[$field]);
+                                }
+                                // 格式化操作是一个串就按串的解析
+                                if ($format_type === 'string') {
+                                    $func_params[] = str_replace($param, $params[$field], $format_operations[$field]);
+                                }
+
+                            } else {
+                                $func_params[] = $params[substr($param, 1)];
+                            }
+                        } else {
+                            $func_params = [];
+                            continue;
                         }
                     } else { // 使用常量字符串
                         $func_params[] = $param;
@@ -128,15 +160,9 @@ trait SearchTrait
                         break;
                     }
             }
-
         }
         $result['total'] = $sql->count();
         if ($result['total'] > 0) {
-            foreach ($search_operations as $rule) {
-                $func = $rule[0];
-                unset($rule);
-                $sql = count($rule) === 1 ? $sql->$func($key) : $sql->$func($key, $rule[1]);
-            }
             $result['rows'] = $sql->skip($params['offset'])->take($params['limit'])->get();
         }
         return $result;
