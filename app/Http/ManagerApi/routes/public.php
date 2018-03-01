@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * 公共路由文件
+ * 
+ * @file public.php
+ * @author xiaojian
+ * @date 2018年03月01日
+ */
 use App\Api\Contracts\ApiContract;
 use App\Core\AuthContract;
 use App\Api\Contracts\CsrfContract;
@@ -10,6 +18,7 @@ $app->get('/', function () {
     return redirect('ng');
 });
 
+// 公共签名路由组
 $app->group(['middleware' => 'sign'], function ($app) {
     
     // 用户登入
@@ -17,26 +26,28 @@ $app->group(['middleware' => 'sign'], function ($app) {
 
         $params = $api->checkParams(['account:min:4|max:12', 'password:min:4|max:12', 'platform:min:4|max:10']);
 
-        if ($auth->signin($params)) {
-            $tokenParams = $auth->updateToken($params['platform']);
-            $tokenParams['platform'] = $params['platform'];
-            return $api->datas($tokenParams);
-        } else {
+        // 使用signin方法校验登入参数
+        if ($auth->signin($params) === false) {
             return $api->error("账户或密码错误");
         }
+        // 更新登入令牌
+        $tokenParams = $auth->updateToken($params['platform']);
+        // 把登入平台参数原样返回
+        $tokenParams['platform'] = $params['platform'];
+
+        return $api->datas($tokenParams);
     });
 
-    // 用户退出登入
+    // 用户登出
     $app->get('/signout', function (ApiContract $api, AuthContract $auth) {
 
         // 尝试获取权限令牌
         $secret = Request::header('ng-params-one');
         $token = Request::header('ng-params-two');
         $platform = Request::header('ng-params-three');
-        // $token = Request::header('ng-params-four');
 
         // 判断头部参数是否存在
-        if (isset($secret, $token) === false) {
+        if (isset($secret, $token, $platform) === false) {
             return response($api->error('无授权令牌'), 401);
         }
 
@@ -59,14 +70,21 @@ $app->group(['middleware' => 'sign'], function ($app) {
             [],
             ['ng-params-one' => 'secret', 'ng-params-two' => 'token', 'ng-params-three' => 'platform']
         );
-        if ($auth->checkToken($params['secret'], $params['token'], $params['platform'])) {
-            $csrf->update();
-            $user = $auth->user;
-            $user->rolename = AccessRole::find($user->role)->name;
-            return $api->datas($user);
-        } else {
+
+        // 校验令牌是否有效
+        if ($auth->checkToken($params['secret'], $params['token'], $params['platform']) === false) {
             return $api->error("未授权的令牌~");
+
         }
+
+        // 更新csrf令牌，防止跨网站攻击
+        $csrf->update();
+        // 获取当前用户ORM对象
+        $user = $auth->user;
+        // 获取用户的角色名称
+        $user->rolename = AccessRole::find($user->role)->name;
+
+        return $api->datas($user);
     });
 });
 

@@ -31,7 +31,15 @@ class SignMiddleware
     {
 
         // 关闭解密&签名
-        return $next($request);
+        if (env('APP_SIGN_CHECK') === false) {
+            return $next($request);
+        }
+
+        // GET、DELETE、OPTIONS不需要签名加密
+        $method = $request->method();
+        if ($method === 'GET' || $method === 'GET' || $method === 'OPTIONS') {
+            return $next($request);
+        }
 
         // 获取用户私钥
         $rsa = config('rsa');
@@ -52,7 +60,6 @@ class SignMiddleware
         });
 
         // 参数解密--只有POST/PUT才需要解密--并且不能附带文件
-        $method = $request->method();
         if ($method === 'POST' || $method === 'PUT') {
             $private_key = openssl_pkey_get_private($private_key);
             foreach ($params as $key => $value) {
