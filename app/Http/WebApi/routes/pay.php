@@ -27,11 +27,6 @@ $app->get('/alipay/pc/order/new', function (ApiContract $api) {
         'ordersn' => date('YmdHis'),
     ];
     $order_data_url = $pay->initPcOrderData($order['price'], $order['title'], $order['body'], $order['ordersn']);
-    StorePayLog::insert([
-        'price' => $order['price'],
-        'ordersn' => $order['ordersn'],
-        'type' => '支付宝',
-    ]);
     return redirect($order_data_url);
 });
 
@@ -52,19 +47,16 @@ $app->post('/alipay/order/notify_url', function (ApiContract $api) {
     $pay = new Alipay();
     $check_result = $pay->notifyCheck($return_params);
     if ($check_result['result']) {
-        StorePayLog::where(['type' => '支付宝', 'ordersn' => $return_params['out_trade_no']])->update([
-            'params' => json_encode($return_params),
-            'status' => 1,
-            'no' => $return_params['trade_no'],
-        ]);
+        // 支付成功业务
+
+        // StorePayLog::where(['type' => '支付宝', 'ordersn' => $return_params['out_trade_no']])->update([
+        //     'params' => json_encode($return_params),
+        //     'status' => 1,
+        //     'no' => $return_params['trade_no'],
+        // ]);
+
         return 'success';
     } else {
-        StorePayLog::insert([
-            'price' => 0,
-            'ordersn' => '0',
-            'type' => '支付宝-错误',
-            'params' => json_encode($return_params),
-        ]);
         return 'fail';
     }
 });
@@ -79,19 +71,23 @@ $app->post('/alipay/order/app_url', function (ApiContract $api) {
     $pay = new Alipay();
     $check_result = $pay->appPayCheck($return_params);
     if ($check_result['result']) {
-        StorePayLog::where(['type' => '支付宝', 'ordersn' => $check_result['datas']['out_trade_no']])->update([
-            'params' => json_encode($check_result['datas']),
-            'status' => 1,
-            'no' => $check_result['datas']['trade_no'],
-        ]);
+
+        // 支付成功业务
+        // StorePayLog::where(['type' => '支付宝', 'ordersn' => $check_result['datas']['out_trade_no']])->update([
+        //     'params' => json_encode($check_result['datas']),
+        //     'status' => 1,
+        //     'no' => $check_result['datas']['trade_no'],
+        // ]);
+
         return 'success';
     } else {
-        StorePayLog::insert([
-            'price' => 0,
-            'ordersn' => '0',
-            'type' => '支付宝-错误',
-            'params' => json_encode($return_params),
-        ]);
+
+        // StorePayLog::insert([
+        //     'price' => 0,
+        //     'ordersn' => '0',
+        //     'type' => '支付宝-错误',
+        //     'params' => json_encode($return_params),
+        // ]);
         return 'fail';
     }
 });

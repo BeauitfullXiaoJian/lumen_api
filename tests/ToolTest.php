@@ -15,10 +15,11 @@ class ToolTest extends TestCase
     public function testPublicUpload()
     {
         $this->call('POST', '/tool/edit/upload', [], [], ['file' => UploadedFile::fake()->image(md5(time()) . '.jpg')]);
+        $this->createHtml(__FUNCTION__);        
         $this->assertResponseOk();
         $apiData = json_decode($this->response->getContent(), true);
-        $this->assertEquals($apiData['result'], true);
         $this->log('info', __class__ . '::' . __FUNCTION__, $apiData);
+        $this->assertEquals($apiData['result'], true);
         return $apiData['datas'];
     }
 

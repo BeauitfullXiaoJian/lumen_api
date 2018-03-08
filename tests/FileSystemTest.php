@@ -13,11 +13,11 @@ class FileSystemTest extends TestCase
     public function testPublicUpload()
     {
         $this->call('GET', '/filesystem/test');
+        $this->createHtml(__FUNCTION__);
         $this->assertResponseOk();
         $apiData = json_decode($this->response->getContent(), true);
-        $this->assertEquals($apiData['result'], true);
         $this->log('info', __class__ . '::' . __FUNCTION__, $apiData);
-        return $apiData['datas'];
+        $this->assertEquals($apiData['result'], true);
     }
 
 }
