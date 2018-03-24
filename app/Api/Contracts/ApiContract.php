@@ -5,6 +5,12 @@ namespace App\Api\Contracts;
 interface ApiContract
 {
 
+    // try to get a file obj
+    public function file($key);
+
+    // try to get a form param;
+    public function input($key);
+    
     //try to get all request params
     public function all();
 

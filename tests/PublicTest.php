@@ -65,10 +65,11 @@ class PublicTest extends TestCase
             'platform' => 'admin',
         ];
         $response = $this->call('POST', '/signin', $params);
+        $this->createHtml(__FUNCTION__);
         $this->assertResponseOk();
         $apiData = json_decode($response->getContent(), true);
-        $this->assertEquals($apiData['result'], true);
         $this->log('info', __class__ . '::' . __FUNCTION__, $apiData);
+        $this->assertEquals($apiData['result'], true);
         return $apiData['datas'];
     }
 

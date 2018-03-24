@@ -1,9 +1,13 @@
 <?php
+<<<<<<< HEAD
 $server = new swoole_websocket_server("www.cool1024.com", 9502, SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
 $server->set(array(
     'ssl_cert_file' =>'/var/www/letsencrypt.sh/certs/cool1024.com/fullchain-1519371728.pem',
     'ssl_key_file' =>'/var/www/letsencrypt.sh/certs/cool1024.com/privkey-1519371728.pem',
 ));
+=======
+$server = new swoole_websocket_server("127.0.0.1", 9502);
+>>>>>>> 0fe85e2f62b64a58d042fc2334e63048511feaf0
 
 $server->on('open', function ($server, $req) {
     echo "connection open: {$req->fd}\n";
@@ -51,12 +55,12 @@ $server->on('close', function ($server, $fd) {
 $server->on('request', function (swoole_http_request $request, swoole_http_response $response) {
     global $server;
     // $server->connections 遍历所有websocket连接用户的fd，给所有用户推送
+    return $response->end('push success');
     foreach ($server->connections as $fd) {
         if ($request->fd !== $fd) {
             $server->push($fd, $request->get['message']);
         }
     }
-    return $response->end('push success');
 });
 
 $server->start();

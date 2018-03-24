@@ -5,6 +5,7 @@ use App\Api\Contracts\HttpContract;
 use App\Core\AuthContract;
 use App\Models\StoreVipUser;
 use App\Events\ExampleEvent;
+use Illuminate\Support\Facades\Storage;
 
 // 音频上传
 $app->post('/tool/audio', function (ApiContract $api, FileContract $file) {
@@ -25,8 +26,12 @@ $app->post('/tool/edit/upload', function (ApiContract $api, FileContract $file, 
     $params = $api->checkParams(
         ['file:mimetypes:video/*,image/*', 'ng-params-one:min:4|max:100', 'ng-params-two:min:30|max:200', 'ng-params-three:max:10']
     );
+    $check = $auth->checkToken($params['ng-params-one'], $params['ng-params-two'], $params['ng-params-three']);
     if ($auth->checkToken($params['ng-params-one'], $params['ng-params-two'], $params['ng-params-three'])) {
-        return ['link' => env('APP_URL', 'http://localhost') . "/" . $file->saveFileTo('file', 'upload')];
+        // 使用文件系统保存
+        return ['link' => env('APP_URL', 'http://localhost') . '/storage/' . $api->file('file')->store('images')];
+        // 使用文件服务保存
+        // return ['link' => env('APP_URL', 'http://localhost') . "/" . $file->saveFileTo('file', 'upload')];
     } else {
         return $api->error("未授权的令牌~");
     }
@@ -60,8 +65,43 @@ $app->get('/tool/download/randomuser', function (ApiContract $api, HttpContract 
     return $users;
 });
 
+// search方法测试
+$app->get('/traits/search', function (ApiContract $api) {
+    $params = $api->checkParams(['offset:integer', 'limit:integer'], ['params-one', 'params-two']);
+
+    // 查询配置参数
+    $search_params = [
+        // ['where', 'vip_level', 4],
+        // ['where', 'nick', 'like', '$params-one'],
+        // ['where', 'id', '>', '$params-two'],
+        ['whereIn', 'id', '$params-two'],
+        ['orderBy', 'vip_level', 'asc']
+    ];
+
+    // 格式化配置参数
+    $format_ops = [
+        'params-one' => '%$params-one%',
+        'params-two' => function ($param) {
+            return explode(',', $param);
+        },
+    ];
+    $datas = with(new StoreVipUser)->search($params, $search_params, $format_ops);
+    return $api->paginate($datas);
+});
+
 // 事件测试
 $app->get('/event/test', function (ApiContract $api) {
     event(new ExampleEvent());
     return $api->success('event test success');
+});
+
+// 文件系统测试
+$app->get('/filesystem/test', function (ApiContract $api) {
+    Storage::disk('local')->put('file.txt', 'test file');
+    return $api->success('filesystem test success');
+});
+
+// 文件系统测试
+$app->get('/filesystem/download', function () {
+    return response()->download(storage_path('app/images/1BKpzq5zxCxP8DWg1HskX3EOWH6zGSNExVgoBoTa.jpeg'));
 });

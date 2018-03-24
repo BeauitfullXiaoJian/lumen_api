@@ -58,6 +58,30 @@
             "url": "/tool/download/randomuser",
             "method": "get",
             "inputs": []
+        },
+        {
+            "title": "测试ORM SEARCH特性",
+            "description": "",
+            "url": "/traits/search",
+            "method": "get",
+            "inputs": [
+                {
+                    "name": "params-one",
+                    "desctiption": ""
+                },
+                {
+                    "name": "params-two",
+                    "desctiption": ""
+                },
+                {
+                    "name": "limit",
+                    "desctiption": ""
+                },
+                {
+                    "name": "offset",
+                    "desctiption": ""
+                }
+            ]
         }
     ]
 }

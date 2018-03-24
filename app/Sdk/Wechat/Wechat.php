@@ -62,7 +62,7 @@ class Wechat
         $newPara["mch_id"] = $this->mch_id;
         //设备号
         $newPara["device_info"] = "WEB";
-         //随机字符串
+        //随机字符串
         $newPara["nonce_str"] = $this->get_rand_key() . uniqid();
         //商品描述
         $newPara["body"] = $body;
@@ -106,6 +106,23 @@ class Wechat
     private function send_pre_pay_curl($xml_data)
     {
         $url = $this->pre_pay_url;
+        $header[] = "Content-type: text/xml";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xml_data);
+        $data = curl_exec($curl);
+        if (curl_errno($curl)) {
+            print curl_error($curl);
+        }
+        curl_close($curl);
+        return $this->xml_data_parse($data);
+    }
+
+    private function send_post_curl($url, $xml_data)
+    {
         $header[] = "Content-type: text/xml";
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
@@ -226,11 +243,11 @@ class Wechat
     }
 
     /*
-     * exp      异步回掉
+     * exp      异步通知验证
      * params   string(data)
      * return   array[result:boolean,message:string,datas:array]
      */
-    public function notifyCheck($params)
+    public function notifyCheck($xmldata)
     {
         $return_datas = [
             //验签结果
@@ -278,6 +295,24 @@ class Wechat
             //file_put_contents("/home/infoback.txt", "验签失败", FILE_APPEND);
             // return 'FAIL';
         }
+        return $return_datas;
+    }
+
+    /*
+     * exp      订单查询
+     * params   string(ordersn)
+     * return   array(result)
+     */
+    public function findOrder($ordersn)
+    {
+        $newPara["appid"] = $this->app_id;
+        $newPara["mch_id"] = $this->mch_id;
+        $newPara["out_trade_no"] = $ordersn;
+        $newPara["nonce_str"] = $this->get_rand_key() . uniqid();
+        $newPara["sign_type"] = "MD5";
+        $newPara["sign"] = $newPara["sign"] = $this->produce_wechat_sign($newPara);
+        $xml_data = $this->get_wechat_xml($newPara);
+        $return_datas = $this->send_post_curl("https://api.mch.weixin.qq.com/pay/orderquery", $xml_data);
         return $return_datas;
     }
 }

@@ -211,7 +211,7 @@ class AuthService implements AuthContract
     public function decodeSecretId($secret)
     {
         $id = base64_decode($secret);
-        return (bool) preg_match('/^[1-9][0-9]*$/', $id) ? $id : 0;
+        return (bool)preg_match('/^[1-9][0-9]*$/', $id) ? $id : 0;
     }
 
     /*
