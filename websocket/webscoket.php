@@ -1,5 +1,9 @@
 <?php
-$server = new swoole_websocket_server("139.129.161.216", 9502);
+$server = new swoole_websocket_server("www.cool1024.com", 9502, SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
+$server->set(array(
+    'ssl_cert_file' =>'/var/www/letsencrypt.sh/certs/cool1024.com/fullchain-1519371728.pem',
+    'ssl_key_file' =>'/var/www/letsencrypt.sh/certs/cool1024.com/privkey-1519371728.pem',
+));
 
 $server->on('open', function ($server, $req) {
     echo "connection open: {$req->fd}\n";
